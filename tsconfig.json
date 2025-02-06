@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "noImplicitAny": false,
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "astal/gtk3",
+    "baseUrl": ".",
+    "paths": {
+      "astal": ["/usr/share/astal/gjs"],
+      "astal/*": ["/usr/share/astal/gjs/*"]
+    }
+  },
+  "include": ["./**/*", "../env.d.ts", "core/lib/_globals.ts", "../@girs"]
+}
