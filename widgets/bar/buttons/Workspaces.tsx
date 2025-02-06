@@ -1,12 +1,12 @@
 import Hyprland from 'gi://AstalHyprland';
 import { bind, Variable } from 'astal';
 import PanelButton from '../PanelButton';
-import options from '../options';
 import Box from 'gtk/primitive/Box';
 import { scss } from 'core/theme';
 import { range } from 'core/lib/array';
 import { throttle } from 'core/lib/function';
 import { cnames } from 'core/lib/utils';
+import options from 'options';
 
 void scss`.Bar {
   .panel.transparent .PanelButton.Workspaces label.Workspace {
@@ -78,7 +78,7 @@ function Workspace(id: number) {
 }
 
 export default function Workspaces() {
-  const { flat, workspaces, label } = options.workspaces;
+  const { flat, workspaces, label } = options.bar.workspaces;
   const hyprland = Hyprland.get_default();
 
   const scroll = throttle(200, (y: number) => hyprland.dispatch('workspace', y > 0 ? 'm+1' : 'm-1'));

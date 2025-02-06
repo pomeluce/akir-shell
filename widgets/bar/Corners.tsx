@@ -1,11 +1,11 @@
 import { App, Gdk, Astal } from 'astal/gtk3';
 import { Variable, idle } from 'astal';
-import options from './options';
 import { scss } from 'core/theme';
 import { cnames } from 'core/lib/utils';
+import options from 'options';
 
 export default function Corners(monitor: Gdk.Monitor) {
-  const { corners, transparent, position } = options;
+  const { corners, transparent, position } = options.bar;
 
   const className = Variable.derive([corners, position], (c, p) => cnames('Corners', c, p));
 

@@ -1,13 +1,13 @@
 import Icon from 'gtk/primitive/Icon';
 import Battery from 'gi://AstalBattery';
 import PanelButton from '../PanelButton';
-import options from '../options';
 import { Gtk } from 'astal/gtk3';
 import { bind, Variable } from 'astal';
 import { scss } from 'core/theme';
 import { cnames } from 'core/lib/utils';
+import options from 'options';
 
-const { flat, suggested, bar, percentage, low, size } = options.battery;
+const { flat, suggested, bar, percentage, low, size } = options.bar.battery;
 
 function blocks(s: 'sm' | 'md' | 'lg') {
   if (s === 'sm') return 6;

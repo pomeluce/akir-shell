@@ -11,9 +11,9 @@ import Messages from './buttons/Messages';
 import ScreenRecord from './buttons/ScreenRecord';
 import { Variable } from 'astal';
 import { App, Astal, Gdk } from 'astal/gtk3';
-import options from './options';
 import { scss } from 'core/theme';
 import { cnames } from 'core/lib/utils';
+import options from 'options';
 
 void scss`.Bar .panel {
   &.bold label { font-weight: bold; }
@@ -71,7 +71,7 @@ export default function Bar(monitor: Gdk.Monitor) {
   const top = Astal.WindowAnchor.TOP | lr;
   const bottom = Astal.WindowAnchor.BOTTOM | lr;
 
-  const { transparent, bold, position, layout } = options;
+  const { transparent, bold, position, layout } = options.bar;
   const { start, center, end } = layout;
 
   const className = Variable.derive([transparent, bold], (t, b) =>

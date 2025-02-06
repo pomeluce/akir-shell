@@ -1,15 +1,16 @@
 import { App } from 'astal/gtk3';
 import { Variable } from 'astal';
-import options from 'core/theme/options';
 import Bar from './Bar';
 import Corners from './Corners';
-import baropts from './options';
+import options from 'options';
+
+const { bar, theme } = options;
 
 export default () => {
   const bars = App.get_monitors().map(Bar);
   App.get_monitors().map(Corners);
 
-  if (options.hyprland.enable.get()) {
+  if (theme.hyprland.enable.get()) {
     import('gi://AstalHyprland').then(m => {
       const h = m.default.get_default();
       const msg = (s: string) => h.message_async(s, null);
@@ -17,7 +18,7 @@ export default () => {
       msg('keyword layerrule noanim,bar');
       msg('keyword layerrule noanim,corners');
 
-      Variable.derive([options.spacing, options.hyprland.gapsMultiplier, baropts.transparent, baropts.position], (gaps, mul, tr, pos) => {
+      Variable.derive([theme.spacing, theme.hyprland.gapsMultiplier, bar.transparent, bar.position], (gaps, mul, tr, pos) => {
         const bar = bars[0].get_allocated_height();
         const gap = gaps * mul;
         const r = gap > bar ? -bar : -(gap * 0.9);

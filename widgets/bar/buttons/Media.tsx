@@ -4,9 +4,9 @@ import Mpris from 'gi://AstalMpris';
 import PanelButton from '../PanelButton';
 import { bind, Variable, timeout } from 'astal';
 import { throttle } from 'core/lib/function';
-import options from '../options';
+import options from 'options';
 
-const { flat, preferred, monochrome, direction, format, maxChars, timeout: tout } = options.media;
+const { flat, preferred, monochrome, direction, format, maxChars, timeout: tout } = options.bar.media;
 
 function Player(player: Mpris.Player, reveal: Variable<boolean>) {
   let cancel = false;

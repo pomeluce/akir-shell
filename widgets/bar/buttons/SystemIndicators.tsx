@@ -7,8 +7,8 @@ import Wp from 'gi://AstalWp';
 import { bind, Variable } from 'astal';
 import { sh } from 'core/lib/os';
 import { throttle } from 'core/lib/function';
-import options from '../options';
 import Icon from 'gtk/primitive/Icon';
+import options from 'options';
 
 function AudioIcon() {
   const speaker = Wp.get_default()!.audio.defaultSpeaker;
@@ -30,7 +30,7 @@ export default function () {
   const audio = Wp.get_default()!.audio;
   const network = Network.get_default();
   const { WIFI, WIRED } = Network.Primary;
-  const { flat, action, label } = options.systemIndicators;
+  const { flat, action, label } = options.bar.systemIndicators;
 
   const wifi = bind(network, 'wifi').get();
   const wired = bind(network, 'wired').get();

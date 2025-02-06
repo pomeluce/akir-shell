@@ -2,10 +2,10 @@ import Icon from 'gtk/primitive/Icon';
 import Hyprland from 'gi://AstalHyprland';
 import PanelButton from '../PanelButton';
 import { bind } from 'astal';
-import options from '../options';
+import options from 'options';
 
 function Client(client: Hyprland.Client) {
-  const { flat, monochrome } = options.taskbar;
+  const { flat, monochrome } = options.bar.taskbar;
   const hyprland = Hyprland.get_default();
 
   const focused = bind(hyprland, 'focusedClient').as(c => c === client);
