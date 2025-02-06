@@ -24,6 +24,7 @@ export default function Header() {
   return (
     <Box className="Header" gap="xl" m="2xl" pt="2xl">
       <box
+        canFocus
         className="Avatar"
         css={Variable.derive(
           [image, size],

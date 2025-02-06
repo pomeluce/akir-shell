@@ -17,7 +17,7 @@ import options from 'options';
 import { derive } from 'astal';
 
 void scss`.QuickSettings {
-  padding: 0 $padding;
+  padding: 0 $padding * .25;
 
   & button {
     all: unset;
