@@ -79,7 +79,7 @@ export default mkOptions('config', {
     date: {
       flat: opt(true),
       format: opt('%m-%d %H:%M:%S - %A'),
-      action: opt(`akir eval "launcher('cal')"`),
+      action: opt(`akir -t datemenu`),
       label: opt('Calendar'),
     },
     battery: {
@@ -164,5 +164,17 @@ export default mkOptions('config', {
       { dark: '#51e6e6', light: '#43c3c3' },
       { dark: '#ffffff', light: '#080808' },
     ]),
+  },
+
+  datemenu: {
+    position: opt<'left' | 'center' | 'right'>('center'),
+  },
+  notifications: {
+    position: opt<Array<'top' | 'bottom' | 'left' | 'right'>>(['top', 'right']),
+    blacklist: opt(['Spotify']),
+    width: opt(440),
+    text: opt('当前没有任何通知'),
+    iconSize: opt(5),
+    maxItems: opt(90),
   },
 });

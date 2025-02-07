@@ -11,6 +11,7 @@ main(
     import('./widgets/notifications'),
     import('./widgets/drawer'),
     import('./widgets/quicksettings'),
+    import('./widgets/datemenu'),
     /* import('./info'), */
   ),
 );

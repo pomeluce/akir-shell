@@ -1,20 +1,20 @@
 import PanelButton from '../PanelButton';
-import { Variable, GLib } from 'astal';
+import { Variable } from 'astal';
+import { clock } from 'core/lib/date';
 import { sh } from 'core/lib/os';
 import options from 'options';
 
 export default function () {
-  const now = () => GLib.DateTime.new_now_local();
-  const date = Variable(now()).poll(1000, now);
-
   const { action, format, flat, label } = options.bar.date;
-  const time = Variable.derive([date, format], (c, f) => c.format(f) || '');
+  const time = Variable.derive([clock, format], (c, f) => c.format(f) || '');
 
   return (
     <PanelButton
+      winName="datemenu"
+      color="primary"
       flat={flat()}
       onDestroy={() => {
-        date.drop();
+        clock.drop();
         time.drop();
       }}
       tooltipText={label()}
