@@ -101,7 +101,7 @@ export default function QuickSettings() {
           <Header />
           <Box vertical py="xl" px="2xl" gap="xl">
             <SiderBox />
-            <Box vertical py="xl" gap="xl">
+            <Box vertical py="xl" gap="2xl">
               <Row buttons={[Network, Bluetooth]} menus={[WifiSelection, BluetoothDevices]} />
               <Row buttons={[ThemeColor, DarkMode]} menus={[ThemeColorSelection]} />
               <Row buttons={[MicMute, DND]} />

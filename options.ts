@@ -101,7 +101,7 @@ export default mkOptions('config', {
     },
     messages: {
       flat: opt(true),
-      action: opt(`akir eval "launcher('n')"`),
+      action: opt(`akir -t datemenu`),
     },
     systray: {
       flat: opt(true),
@@ -161,20 +161,22 @@ export default mkOptions('config', {
       { dark: '#EBFF71', light: '#d8e77b' },
       { dark: '#51a4e7', light: '#426ede' },
       { dark: '#9077e7', light: '#8861dd' },
-      { dark: '#51e6e6', light: '#43c3c3' },
       { dark: '#ffffff', light: '#080808' },
     ]),
   },
 
   datemenu: {
     position: opt<'left' | 'center' | 'right'>('center'),
+    calendar: {
+      app: opt('gnome-calendar'),
+    },
   },
   notifications: {
     position: opt<Array<'top' | 'bottom' | 'left' | 'right'>>(['top', 'right']),
     blacklist: opt(['Spotify']),
-    width: opt(440),
+    width: opt(25),
     text: opt('当前没有任何通知'),
     iconSize: opt(5),
-    maxItems: opt(90),
+    maxItems: opt(10),
   },
 });

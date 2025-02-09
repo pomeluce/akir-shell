@@ -47,8 +47,6 @@ export default function Header() {
         </Box>
       </Box>
       <box hexpand />
-      <box hexpand />
-      <box hexpand />
       <SysButton value="lockscreen" icon="system-lock-screen" />
       <SysButton value="logout" icon="system-log-out" />
       <SysButton value="shutdown" icon="system-shutdown" />

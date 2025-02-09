@@ -7,10 +7,16 @@ import options from 'options';
 
 export default function Messages() {
   const { flat, action } = options.bar.messages;
+  const { blacklist } = options.notifications;
   const notifs = bind(Notifd.get_default(), 'notifications');
 
   return (
-    <PanelButton flat={flat()} tooltipText={notifs.as(n => `${n.length} notifications`)} onClicked={() => sh(action.get())} visible={notifs.as(ns => ns.length > 0)}>
+    <PanelButton
+      flat={flat()}
+      tooltipText={notifs.as(n => `${n.length} notifications`)}
+      onClicked={() => sh(action.get())}
+      visible={notifs.as(ns => ns.filter(n => !blacklist.get().includes(n.get_app_name())).length > 0)}
+    >
       <Icon symbolic icon="chat-bubbles" />
     </PanelButton>
   );

@@ -1,4 +1,4 @@
-import { clock, uptime } from 'core/lib/date';
+import { pollTime, uptime } from 'core/lib/date';
 import Box from 'gtk/primitive/Box';
 import Calendar from './Calendar';
 
@@ -9,8 +9,8 @@ function up(up: number) {
 }
 function Clock() {
   return (
-    <Box className="clock-box" vertical p="2xl">
-      <label className="clock" label={clock().as(t => t.format('%H:%M')!)} />
+    <Box className="clock-box" vertical px="2xl" py="xl">
+      <label className="clock" label={pollTime(60)().as(t => t.format('%H:%M')!)} />
       <label className="uptime" label={uptime().as(up)} />
     </Box>
   );
@@ -18,7 +18,7 @@ function Clock() {
 
 export default function DateTime() {
   return (
-    <Box vertical p="2xl">
+    <Box vertical p="2xl" gap="2xl">
       <Clock />
       <Calendar />
     </Box>

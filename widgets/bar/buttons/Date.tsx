@@ -1,11 +1,12 @@
 import PanelButton from '../PanelButton';
 import { Variable } from 'astal';
-import { clock } from 'core/lib/date';
+import { pollTime } from 'core/lib/date';
 import { sh } from 'core/lib/os';
 import options from 'options';
 
 export default function () {
   const { action, format, flat, label } = options.bar.date;
+  const clock = pollTime(1);
   const time = Variable.derive([clock, format], (c, f) => c.format(f) || '');
 
   return (

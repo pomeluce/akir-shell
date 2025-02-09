@@ -11,32 +11,36 @@ import { chunks } from 'core/lib/array';
 import { scss } from 'core/theme';
 
 void scss`window#drawer {
-    &.solid {
-        background-color: $bg;
+  &.solid {
+    background-color: $bg;
+  }
+
+  .app-grid {
+    padding: 0 28rem;
+  }
+
+  .Pager .Button {
+    min-width: 2rem;
+    min-width: 2rem;
+
+    label {
+      font-size: 0px;
     }
 
-    .Pager .Button {
-        min-width: 2rem;
-        min-width: 2rem;
-
-        label {
-            font-size: 0px;
-        }
-
-        .Box {
-            transition: $transition;
-            border-radius: $radius;
-            background-color: $fg;
-            min-width: .4rem;
-            min-height: .4rem;
-        }
-
-        &.selected .Box {
-            min-width: .6rem;
-            min-height: .6rem;
-            background-color: $primary;
-        }
+    .Box {
+      transition: $transition;
+      border-radius: $radius;
+      background-color: $fg;
+      min-width: .4rem;
+      min-height: .4rem;
     }
+
+    &.selected .Box {
+      min-width: .6rem;
+      min-height: .6rem;
+      background-color: $primary;
+    }
+  }
 }`;
 
 export default function Drawer() {
@@ -51,7 +55,7 @@ export default function Drawer() {
 
   return (
     <PopupWindow shade name="drawer" className={solid.as(s => (s ? 'solid' : ''))}>
-      <box vertical>
+      <box className='app-grid' vertical>
         <stack shown={visible(String)} transitionType={Gtk.StackTransitionType.SLIDE_LEFT_RIGHT}>
           {grids(grids =>
             grids.map((grid, i) => (

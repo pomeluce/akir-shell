@@ -5,6 +5,7 @@ import Box from 'gtk/primitive/Box';
 import Icon from 'gtk/primitive/Icon';
 import options from '../../options';
 import { scss } from 'core/theme';
+import { execAsync } from 'astal';
 
 void scss`.Launcher .AppButton {
   label.name {
@@ -28,7 +29,7 @@ export default function AppButton({ app }: { app: Apps.Application }) {
       hexpand
       className="AppButton"
       onClicked={() => {
-        app.launch();
+        execAsync(app.executable.split(' ')[0]).catch(console.error);
         App.get_window('launcher')!.hide();
       }}
     >
