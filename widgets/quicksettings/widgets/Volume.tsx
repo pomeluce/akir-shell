@@ -112,7 +112,7 @@ function MixerItem({ stream }: { stream: Wp.Endpoint }) {
 const AudioSettings = () => (
   <button
     onClicked={() => {
-      if (dependencies('pavucontrol')) sh(quicksettings.volume.get());
+      if (dependencies('gnome-control-center')) sh(quicksettings.volume.get());
     }}
   >
     <Box px="2xl" gap="md">

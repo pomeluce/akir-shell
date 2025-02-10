@@ -143,9 +143,9 @@ export default mkOptions('config', {
       min: opt(0.5),
       max: opt(0.75),
     },
-    volume: opt('pavucontrol'),
-    bluetooth: opt('blueman-manager'),
-    network: opt('nm-connection-editor'),
+    volume: opt('env XDG_CURRENT_DESKTOP=gnome gnome-control-center sound'),
+    bluetooth: opt('env XDG_CURRENT_DESKTOP=gnome gnome-control-center bluetooth'),
+    network: opt('env XDG_CURRENT_DESKTOP=gnome gnome-control-center wifi'),
     media: {
       maxItems: opt(10),
       coverSize: opt(6),

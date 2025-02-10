@@ -7,7 +7,7 @@ import { lengthStr } from 'core/lib/utils';
 import { mkdir } from 'core/lib/os';
 
 export default function ScreenRecord() {
-  const file = `${GLib.get_user_runtime_dir()}/marble/recording.json`;
+  const file = `${TMP}/recording.json`;
   const visible = Variable(false);
   const time = Variable(0);
 
