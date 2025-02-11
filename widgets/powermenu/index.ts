@@ -1,7 +1,7 @@
 import { Variable, exec } from 'astal';
-import options from './options';
 import PowerMenu from './PowerMenu';
 import Verification from './Verification';
+import options from 'options';
 
 export type Btn = 'hibernate' | 'shutdown' | 'logout' | 'reboot' | 'sleep' | 'lockscreen';
 
@@ -26,7 +26,7 @@ export default function powermenu() {
   }
 
   function onAccept() {
-    exec(options[selected.get()].get());
+    exec(options.powermenu[selected.get()].get());
     verification.hide();
   }
 

@@ -1,7 +1,7 @@
 import type App3 from 'astal/gtk3/app';
 import type App4 from 'astal/gtk4/app';
 import GLib from 'gi://GLib?version=2.0';
-import options from '../theme/options';
+import options from 'options';
 
 const help = (instanceName: string) => `
 Usage:
@@ -102,8 +102,8 @@ export async function start(props: MainProps) {
       if (['quit', '--quit', '-q'].some(cmd => args.includes(cmd))) return App.quit(0);
 
       const settings = Gtk.Settings.get_default()!;
-      settings.gtkFontName = options.font.get();
-      options.font.subscribe(v => (settings.gtkFontName = v));
+      settings.gtkFontName = options.theme.font.get();
+      options.theme.font.subscribe(v => (settings.gtkFontName = v));
 
       try {
         await theme();

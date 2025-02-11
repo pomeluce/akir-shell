@@ -9,7 +9,7 @@ import { Gtk } from 'astal/gtk3';
 import Notification from './Notification';
 
 const notifd = Notifd.get_default();
-const notifications = bind(notifd, 'notifications').as(ns => ns.filter(n => !options.notifications.blacklist.get().includes(n.get_app_name())));
+const notifications = bind(notifd, 'notifications').as(ns => ns.filter(n => !options.notifications.blacklist.get().includes(n.appName)));
 
 function ClearButton() {
   const notifs = notifications.as(ns => ns.length);
@@ -46,7 +46,13 @@ export default function Notifications() {
       <Gtk.ScrolledWindow visible>
         <Box vertical>
           <Box visible={notifs().as(n => n.length > 0)} vertical vexpand pt="2xl" gap="xl">
-            {notifs(ns => ns.map(n => <Notification notification={n} />))}
+            {notifs(ns =>
+              ns.map(n => (
+                <box vertical>
+                  <Notification notification={n} />
+                </box>
+              )),
+            )}
           </Box>
           <Box vertical vexpand valign={CENTER} halign={CENTER} visible={notifs().as(n => n.length === 0)} gap="md">
             <Icon symbolic icon="notifications-disabled" size={options.notifications.iconSize()} />

@@ -86,7 +86,7 @@ export default function Notification(props: Props) {
         <Box gap="xl" p="lg" className="body">
           {n.image && GLib.file_test(n.image, GLib.FileTest.EXISTS) && (
             <box
-              valign={START}
+              valign={CENTER}
               className="image"
               css={`
                 background-image: url('${n.image}');
@@ -100,7 +100,7 @@ export default function Notification(props: Props) {
           )}
           <Box vertical>
             <label className="title" halign={START} xalign={0} label={n.summary} truncate />
-            {n.body && <label wrap useMarkup halign={START} xalign={0} justifyFill label={n.body} />}
+            {n.body && <label wrap useMarkup halign={START} xalign={0} label={n.body} />}
           </Box>
         </Box>
         {n.get_actions().length > 0 && (

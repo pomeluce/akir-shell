@@ -1,10 +1,12 @@
 import { App, Astal, Gdk, Widget } from 'astal/gtk3';
 import { idle, timeout } from 'astal/time';
 import Notifd from 'gi://AstalNotifd';
-import options from './options';
 import PopupBin from 'gtk/primitive/PopupBin';
 import Box from 'gtk/primitive/Box';
 import Notification from './Notification';
+import options from 'options';
+
+const { notifications } = options;
 
 function Animated(n: Notifd.Notification) {
   const notifd = Notifd.get_default();
@@ -33,7 +35,7 @@ function Animated(n: Notifd.Notification) {
         box = self;
         self.hook(n, 'resolved', onResolved);
         self.hook(n, 'dismissed', () => {
-          if (options.dissmissOnHover.get()) onResolved();
+          if (notifications.dissmissOnHover.get()) onResolved();
         });
         self.hook(notifd, 'notified', (_, id, replaced) => {
           void (replaced && id == n.id && self.destroy());
@@ -41,7 +43,7 @@ function Animated(n: Notifd.Notification) {
       }}
     >
       <revealer transitionDuration={transition} transitionType={SLIDE_DOWN} setup={self => (revealer = self)}>
-        <PopupBin p="lg" r="md" css={options.width(w => `min-width: ${w}rem`)}>
+        <PopupBin p="lg" r="md" css={notifications.width(w => `min-width: ${w}rem`)}>
           <Box m="md">
             <Notification onHoverLost={onResolved} notification={n} />
           </Box>
@@ -53,9 +55,9 @@ function Animated(n: Notifd.Notification) {
 
 export default function Notifications(monitor: Gdk.Monitor) {
   const notifd = Notifd.get_default();
-  const blacklist = options.blacklist.get;
+  const blacklist = notifications.blacklist.get;
 
-  const anchor = options.anchor(anchors => anchors.map(a => Astal.WindowAnchor[a.toUpperCase()]).reduce((prev, a) => prev | a, 0));
+  const anchor = notifications.anchor(anchors => anchors.map(a => Astal.WindowAnchor[a.toUpperCase()]).reduce((prev, a) => prev | a, 0));
 
   function setup(self: Widget.Box) {
     self.hook(notifd, 'notified', (_, id: number) => {

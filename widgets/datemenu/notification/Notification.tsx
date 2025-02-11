@@ -62,7 +62,7 @@ export default function Notification({ notification }: { notification: Notifd.No
         <Box gap="xl" p="lg" className="body">
           {n.image && GLib.file_test(n.image, GLib.FileTest.EXISTS) && (
             <box
-              valign={START}
+              valign={CENTER}
               className="image"
               css={`
                 background-image: url('${n.image}');
@@ -84,7 +84,7 @@ export default function Notification({ notification }: { notification: Notifd.No
                 </Button>
               </Box>
             </Box>
-            {n.body && <label wrap useMarkup halign={START} xalign={0} justifyFill label={n.body} />}
+            {n.body && <label wrap useMarkup halign={START} xalign={0} label={n.body} />}
           </Box>
         </Box>
         {n.get_actions().length > 0 && (

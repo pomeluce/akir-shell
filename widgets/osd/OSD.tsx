@@ -5,8 +5,10 @@ import PopupBin from 'gtk/primitive/PopupBin';
 import Progress from './Progress';
 import Brightness from 'core/service/brightness';
 import Wp from 'gi://AstalWp';
-import options from './options';
 import { scss } from 'core/theme';
+import options from 'options';
+
+const { osd } = options;
 
 function anchor(anchors: Array<'top' | 'bottom' | 'left' | 'right'>) {
   return anchors.reduce((prev, a) => prev | Astal.WindowAnchor[a.toUpperCase()], 0);
@@ -34,7 +36,7 @@ function OnScreenProgress({ vertical, visible }: { vertical: boolean; visible: V
 
   const iconName = Variable('');
   const progValue = Variable(0);
-  const transitionType = Variable.derive([options.slide, options.anchors], (s, a) => {
+  const transitionType = Variable.derive([osd.slide, osd.anchors], (s, a) => {
     if (!s) return CROSSFADE;
     if (a.includes('top')) return SLIDE_DOWN;
     if (a.includes('bottom')) return SLIDE_UP;
@@ -49,7 +51,7 @@ function OnScreenProgress({ vertical, visible }: { vertical: boolean; visible: V
     progValue.set(v);
     iconName.set(ico);
     count++;
-    timeout(options.timeout.get(), () => {
+    timeout(osd.timeout.get(), () => {
       count--;
 
       if (count === 0) visible.set(false);
@@ -67,7 +69,7 @@ function OnScreenProgress({ vertical, visible }: { vertical: boolean; visible: V
       revealChild={visible()}
       transitionType={transitionType()}
     >
-      <box css={options.margin(m => `margin: ${m}px`)}>
+      <box css={osd.margin(m => `margin: ${m}px`)}>
         <PopupBin>
           <Progress value={progValue()} width={vertical ? 42 : 300} height={vertical ? 300 : 42} vertical={vertical} icon={iconName()} />
         </PopupBin>
@@ -77,11 +79,20 @@ function OnScreenProgress({ vertical, visible }: { vertical: boolean; visible: V
 }
 
 export default function OSD(monitor: Gdk.Monitor) {
-  const { vertical, anchors } = options;
+  const { vertical, anchors } = osd;
   const visible = Variable(false);
 
   return (
-    <window gdkmonitor={monitor} className="OSD" namespace="osd" application={App} layer={Astal.Layer.OVERLAY} keymode={Astal.Keymode.ON_DEMAND} anchor={anchors(anchor)}>
+    <window
+      visible={visible()}
+      gdkmonitor={monitor}
+      className="OSD"
+      namespace="osd"
+      application={App}
+      layer={Astal.Layer.OVERLAY}
+      keymode={Astal.Keymode.ON_DEMAND}
+      anchor={anchors(anchor)}
+    >
       <eventbox onClick={() => visible.set(false)}>{vertical(vertical => OnScreenProgress({ vertical, visible }))}</eventbox>
     </window>
   );

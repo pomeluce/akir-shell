@@ -4,9 +4,9 @@
 import Variable from 'astal/variable';
 import Binding from 'astal/binding';
 import { tmpl } from '../lib/utils';
-import theme from './options';
+import options from 'options';
 
-const { dark, light, scheme, padding, spacing, radius, shadows, widget, border, blur } = theme;
+const { dark, light, scheme, padding, spacing, radius, shadows, widget, border, blur } = options.theme;
 
 function t(dark: Variable<string>, light: Variable<string>): Binding<string>;
 function t(dark: string, light: string): Binding<string>;

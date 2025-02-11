@@ -1,10 +1,10 @@
 import Apps from 'gi://AstalApps';
 import { execAsync, Variable } from 'astal';
 import { Plugin } from '../plugin';
-import options from '../../options';
 import ApplicationList from './ApplicationList';
+import options from 'options';
 
-const { maxItems } = options.default;
+const { maxItems } = options.launcher.default;
 
 export default function plug(): Plugin {
   const apps = new Apps.Apps({
@@ -30,7 +30,9 @@ export default function plug(): Plugin {
       );
     },
     enter(entered) {
-      execAsync(q(entered)[0].executable.split(' ')[0]).catch(console.error);
+      const app = q(entered)[0];
+      const isGnome = app.iconName.includes('org.gnome');
+      isGnome ? execAsync(app.executable.split(' ')[0]).catch(console.error) : app.launch();
     },
   };
 }

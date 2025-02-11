@@ -4,10 +4,10 @@ import { writeFileAsync } from 'astal/file';
 import { exec, execAsync } from 'astal/process';
 import { dependencies, mkdir, bash } from 'core/lib/os';
 import Sh from './Sh';
-import options from '../../options';
+import options from 'options';
 
 export default function sh(): Plugin {
-  const { maxItems } = options.sh;
+  const { maxItems } = options.launcher.sh;
 
   if (!dependencies('fzf')) {
     throw Error('missing dependency: fzf');

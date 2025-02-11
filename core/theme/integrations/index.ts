@@ -4,7 +4,6 @@ import type App4 from 'astal/gtk4/app';
 import gsettings from './gsettings';
 import hyprland from './hyprland';
 import swww from './swww';
-import tmux from './tmux';
 
 export type IntegrationProps = {
   App: typeof App3 | typeof App4;
@@ -17,6 +16,6 @@ type Integration = {
   reset?: (props: IntegrationProps) => Promise<any>;
 };
 
-const integrations: Array<Integration> = [hyprland, swww, tmux, gsettings];
+const integrations: Array<Integration> = [hyprland, swww, gsettings];
 
 export default integrations;

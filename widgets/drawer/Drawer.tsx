@@ -6,9 +6,9 @@ import Grid from 'gtk/primitive/Grid';
 import Button from 'gtk/primitive/Button';
 import Box from 'gtk/primitive/Box';
 import AppButton from './AppButton';
-import options from './options';
 import { chunks } from 'core/lib/array';
 import { scss } from 'core/theme';
+import options from 'options';
 
 void scss`window#drawer {
   &.solid {
@@ -45,9 +45,9 @@ void scss`window#drawer {
 
 export default function Drawer() {
   const apps = bind(new Apps.Apps(), 'list');
-  const rows = options.rows();
-  const size = options.rowSize();
-  const solid = options.solidBackground();
+  const rows = options.drawer.rows();
+  const size = options.drawer.rowSize();
+  const solid = options.drawer.solidBackground();
 
   const grids = Variable.derive([apps, rows, size], (apps, rows, size) => chunks(size * rows, apps));
 
@@ -55,7 +55,7 @@ export default function Drawer() {
 
   return (
     <PopupWindow shade name="drawer" className={solid.as(s => (s ? 'solid' : ''))}>
-      <box className='app-grid' vertical>
+      <box className="app-grid" vertical>
         <stack shown={visible(String)} transitionType={Gtk.StackTransitionType.SLIDE_LEFT_RIGHT}>
           {grids(grids =>
             grids.map((grid, i) => (

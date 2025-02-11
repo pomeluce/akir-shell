@@ -4,9 +4,9 @@ import PopupBin from 'gtk/primitive/PopupBin';
 import PopupPadding from 'gtk/primitive/PopupPadding';
 import Search from './Search';
 import Help from './Help';
-import options from './options';
 import plugins from './plugins/plugin';
 import { scss } from 'core/theme';
+import options from 'options';
 
 void scss`.Launcher {
   &.separator-padded separator {
@@ -26,7 +26,7 @@ function hide() {
 
 export default function Launcher() {
   const plugs = plugins();
-  const { separator, width, margin } = options;
+  const { separator, width, margin } = options.launcher;
 
   const showHelp = Variable(false);
   const text = Variable('');

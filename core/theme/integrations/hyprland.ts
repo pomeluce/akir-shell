@@ -1,6 +1,6 @@
+import options from 'options';
 import type { IntegrationProps } from '.';
 import Hyprland from 'gi://AstalHyprland';
-import options from '../options';
 
 function rgba(color: string) {
   return `rgba(${color}ff)`.replace('#', '');
@@ -21,10 +21,10 @@ function sendBatch(...batch: string[]) {
 }
 
 async function reset() {
-  if (!options.hyprland.enable.get()) return;
+  if (!options.theme.hyprland.enable.get()) return;
 
-  const { spacing, border, scheme, dark, light, radius, shadows } = options;
-  const { inactiveBorder, gapsMultiplier } = options.hyprland;
+  const { spacing, border, scheme, dark, light, radius, shadows } = options.theme;
+  const { inactiveBorder, gapsMultiplier } = options.theme.hyprland;
 
   const wm_gaps = Math.floor(spacing.get() * gapsMultiplier.get());
   const active = scheme.mode.get() === 'dark' ? dark.primary.get() : light.primary.get();
@@ -54,7 +54,7 @@ async function init({ App, Astal }: IntegrationProps) {
   async function blur(name: string) {
     await sendBatch(`layerrule unset, ${name}`);
 
-    if (options.blur.get() > 0) {
+    if (options.theme.blur.get() > 0) {
       sendBatch(`layerrule unset, ${name}`, `layerrule blur, ${name}`, `layerrule ignorealpha ${0.29}, ${name}`);
     }
   }
@@ -63,7 +63,7 @@ async function init({ App, Astal }: IntegrationProps) {
     if (win instanceof Astal.Window) blur(win.namespace);
   });
 
-  options.blur.subscribe(() => {
+  options.theme.blur.subscribe(() => {
     for (const win of App.get_windows()) {
       if (win instanceof Astal.Window) blur(win.namespace);
     }

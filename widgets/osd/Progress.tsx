@@ -4,15 +4,15 @@ import { scss } from 'core/theme';
 import Icon from 'gtk/primitive/Icon';
 
 void scss`box.Progress {
-    box.fill {
-        border-radius: $radius;
-        background-color: $primary;
-        transition: 200ms;
+  box.fill {
+    border-radius: $radius;
+    background-color: $primary;
+    transition: 200ms;
 
-        icon {
-            color: $accent-fg;
-        }
+    icon {
+      color: $accent-fg;
     }
+  }
 }`;
 
 type ProgressProps = {

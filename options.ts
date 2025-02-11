@@ -127,6 +127,47 @@ export default mkOptions('config', {
       label: opt('System Indicators'),
     },
   },
+  launcher: {
+    width: opt(0),
+    separator: opt<'none' | 'padded' | 'full'>('padded'),
+    margin: opt(70),
+
+    default: {
+      maxItems: opt(7),
+      icon: {
+        size: opt(4),
+        monochrome: opt(false),
+      },
+    },
+
+    dock: {
+      enable: opt(true),
+      action: opt('akir -t drawer'),
+      icon: {
+        size: opt(4),
+        monochrome: opt(false),
+      },
+      display: opt<number | Array<string>>(['IDEA', 'code', 'firefox', 'telegram', 'typora', 'Spotify']),
+    },
+
+    sh: {
+      enable: opt(true),
+      prefix: opt('sh'),
+      maxItems: opt(12),
+    },
+  },
+  powermenu: {
+    layout: opt<'1x6' | '2x3'>('1x6'),
+    labels: opt(true),
+    iconSize: opt(6),
+
+    hibernate: opt('systemctl hibernate'),
+    sleep: opt('systemctl suspend'),
+    reboot: opt('systemctl reboot'),
+    logout: opt('hyprctl dispatch exit'),
+    shutdown: opt('shutdown now'),
+    lockscreen: opt('swaylock -eF'),
+  },
   quicksettings: {
     position: opt<'left' | 'center' | 'right'>('right'),
     avatar: {
@@ -164,6 +205,22 @@ export default mkOptions('config', {
       { dark: '#ffffff', light: '#080808' },
     ]),
   },
+  drawer: {
+    rowSize: opt(11),
+    rows: opt(6),
+    solidBackground: opt(false),
+    icon: {
+      size: opt(3),
+      monochrome: opt(false),
+    },
+  },
+  osd: {
+    vertical: opt(true),
+    timeout: opt(2000),
+    margin: opt(0),
+    slide: opt(true),
+    anchors: opt<Array<'top' | 'bottom' | 'left' | 'right'>>(['top', 'right']),
+  },
 
   datemenu: {
     position: opt<'left' | 'center' | 'right'>('center'),
@@ -172,11 +229,12 @@ export default mkOptions('config', {
     },
   },
   notifications: {
-    position: opt<Array<'top' | 'bottom' | 'left' | 'right'>>(['top', 'right']),
+    anchor: opt<Array<'top' | 'bottom' | 'left' | 'right'>>(['top', 'right']),
     blacklist: opt(['Spotify']),
-    width: opt(25),
+    width: opt(24),
     text: opt('当前没有任何通知'),
     iconSize: opt(5),
     maxItems: opt(10),
+    dissmissOnHover: opt(false),
   },
 });

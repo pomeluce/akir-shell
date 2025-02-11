@@ -6,10 +6,10 @@ import Button from 'gtk/primitive/Button';
 import Box from 'gtk/primitive/Box';
 import Icon from 'gtk/primitive/Icon';
 import { bind } from 'astal';
-import options from '../../options';
+import options from 'options';
 
 function DockAppButton(app: Apps.Application) {
-  const { icon } = options.dock;
+  const { icon } = options.launcher.dock;
 
   return (
     <Button

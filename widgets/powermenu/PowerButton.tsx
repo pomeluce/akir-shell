@@ -2,7 +2,7 @@ import Box from 'gtk/primitive/Box';
 import Icon from 'gtk/primitive/Icon';
 import { scss } from 'core/theme';
 import { cnames } from 'core/lib/utils';
-import options from './options';
+import options from 'options';
 
 void scss`window#powermenu .PowerButton {
   all: unset;
@@ -66,7 +66,7 @@ type Props = {
 };
 
 export default function PowerButton({ icon, label, onClick }: Props) {
-  const { labels, iconSize } = options;
+  const { labels, iconSize } = options.powermenu;
 
   return (
     <Box p="2xl">

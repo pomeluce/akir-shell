@@ -1,11 +1,11 @@
 import { Variable } from 'astal';
 import { Plugin } from '../plugin';
 import Apps from 'gi://AstalApps';
-import options from '../../options';
 import Dock from './Dock';
 import DockIcon from './DockIcon';
+import options from 'options';
 
-const { display } = options.dock;
+const { display } = options.launcher.dock;
 
 export default function dock(): Plugin {
   const list = Variable<Apps.Application[]>([]);

@@ -15,7 +15,7 @@ export default function Messages() {
       flat={flat()}
       tooltipText={notifs.as(n => `${n.length} notifications`)}
       onClicked={() => sh(action.get())}
-      visible={notifs.as(ns => ns.filter(n => !blacklist.get().includes(n.get_app_name())).length > 0)}
+      visible={notifs.as(ns => ns.filter(n => !blacklist.get().includes(n.appName)).length > 0)}
     >
       <Icon symbolic icon="chat-bubbles" />
     </PanelButton>

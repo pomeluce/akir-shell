@@ -2,10 +2,9 @@ import { Variable } from 'astal';
 import { QSMenu, QSToggleButton } from '../QSButton';
 import Box from 'gtk/primitive/Box';
 import { cnames } from 'core/lib/utils';
-import theme from 'core/theme/options';
 import options from 'options';
 
-const { quicksettings } = options;
+const { quicksettings, theme } = options;
 
 export const ThemeColor = () => {
   return <QSToggleButton name="themeColor" icon="preferences-color" state={true} label="Theme" activate={() => {}} deactivate={() => {}} />;
@@ -13,8 +12,8 @@ export const ThemeColor = () => {
 
 export const ThemeColorSelection = () => {
   function set({ dark, light }: { dark: string; light: string }) {
-    theme.set('dark.primary', dark);
-    theme.set('light.primary', light);
+    options.set('theme.dark.primary', dark);
+    options.set('theme.light.primary', light);
   }
 
   const current = Variable.derive([theme.dark.primary, theme.light.primary], (dark, light) => ({ dark, light }));

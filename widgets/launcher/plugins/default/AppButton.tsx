@@ -3,9 +3,9 @@ import { App } from 'astal/gtk3';
 import Button from 'gtk/primitive/Button';
 import Box from 'gtk/primitive/Box';
 import Icon from 'gtk/primitive/Icon';
-import options from '../../options';
 import { scss } from 'core/theme';
 import { execAsync } from 'astal';
+import options from 'options';
 
 void scss`.Launcher .AppButton {
   label.name {
@@ -20,7 +20,7 @@ void scss`.Launcher .AppButton {
 }`;
 
 export default function AppButton({ app }: { app: Apps.Application }) {
-  const { icon } = options.default;
+  const { icon } = options.launcher.default;
 
   return (
     <Button
@@ -29,7 +29,8 @@ export default function AppButton({ app }: { app: Apps.Application }) {
       hexpand
       className="AppButton"
       onClicked={() => {
-        execAsync(app.executable.split(' ')[0]).catch(console.error);
+        const isGnome = app.iconName.includes('org.gnome');
+        isGnome ? execAsync(app.executable.split(' ')[0]).catch(console.error) : app.launch();
         App.get_window('launcher')!.hide();
       }}
     >

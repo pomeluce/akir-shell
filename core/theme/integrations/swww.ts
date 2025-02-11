@@ -3,19 +3,19 @@ import { execAsync } from 'astal/process';
 import { monitorFile } from 'astal/file';
 import { dependencies, sh } from '../../lib/os';
 import { debounce } from '../../lib/function';
-import options from '../options';
+import options from 'options';
 
 export function setWallpaper(wp: string) {
   return sh`cp ${wp} ${GLib.get_user_config_dir()}/background`;
 }
 
 const WP = `${GLib.get_user_config_dir()}/background`;
-const enabled = options.swww.enable.get;
+const enabled = options.theme.swww.enable.get;
 
 async function wallpaper() {
   if (!enabled() || !dependencies('swww')) return;
   const pos = await sh(`hyprctl cursorpos`);
-  return sh(`swww img --transition-type grow --transition-fps ${options.swww.fps.get()} --transition-pos ${pos.replace(' ', '')} ${WP}`);
+  return sh(`swww img --transition-type grow --transition-fps ${options.theme.swww.fps.get()} --transition-pos ${pos.replace(' ', '')} ${WP}`);
 }
 
 export default {
@@ -27,7 +27,7 @@ export default {
 
     monitorFile(`${TMP}/background`, debounce(5, wallpaper));
 
-    options.swww.enable.subscribe(v => {
+    options.theme.swww.enable.subscribe(v => {
       void (
         v &&
         execAsync('swww-daemon')

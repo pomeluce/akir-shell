@@ -2,8 +2,8 @@ import Box from 'gtk/primitive/Box';
 import PopupBin from 'gtk/primitive/PopupBin';
 import PopupWindow from 'gtk/primitive/PopupWindow';
 import PowerButton from './PowerButton';
-import options from './options';
 import type { Btn } from '.';
+import options from 'options';
 
 type Props = {
   onClick: (btn: Btn) => void;
@@ -52,7 +52,7 @@ export default function PowerMenu({ onClick }: Props) {
     <PopupWindow shade name="powermenu">
       <PopupBin valign={CENTER} vexpand={false} r="4xl" p="2xl">
         <Box m="2xl" p="lg">
-          {options.layout(l => (l === '1x6' ? <LineLayout onClick={onClick} /> : <BoxLayout onClick={onClick} />))}
+          {options.powermenu.layout(l => (l === '1x6' ? <LineLayout onClick={onClick} /> : <BoxLayout onClick={onClick} />))}
         </Box>
       </PopupBin>
     </PopupWindow>
