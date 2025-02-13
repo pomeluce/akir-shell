@@ -57,6 +57,7 @@ export default function Launcher() {
 
   function setPanel(pl: PanelKeyType) {
     currentPanel.set(pl);
+    handler({ text: '' });
   }
 
   function handler({ text, enter, complete }: HandlerProps) {

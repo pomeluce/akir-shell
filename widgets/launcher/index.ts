@@ -7,8 +7,8 @@ export default function launcher() {
 
   Object.assign(globalThis, {
     launcher(panel: PanelKeyType) {
-      launcher.show();
       launcher.setPanel(panel);
+      launcher.show();
     },
   });
 
