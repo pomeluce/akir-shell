@@ -9,7 +9,7 @@ import Box from 'gtk/primitive/Box';
 import PopupWindow, { LayoutType } from 'gtk/primitive/PopupWindow';
 import Icon from 'gtk/primitive/Icon';
 import Button from 'gtk/primitive/Button';
-import { panels } from './panel';
+import { PanelKeyType, panels } from './panel';
 
 void scss`.Launcher {
   &.separator-padded separator {
@@ -35,7 +35,8 @@ function hide() {
 }
 
 export default function Launcher() {
-  const currentPanel = Variable<keyof typeof panels>('app');
+  const currentPanel = Variable<PanelKeyType>('app');
+  const pls = panels();
 
   const { separator, width, margin, anchor } = options.launcher;
 
@@ -45,15 +46,24 @@ export default function Launcher() {
   const position = Variable(0);
   const placeholder = Variable('');
 
+  function hidPanels() {
+    Object.values(pls).map(pl => pl.visible(false));
+  }
+
   function setText(str: string) {
     text.set(str);
     position.set(str.length);
   }
 
-  function handler({ text, enter, complete }: HandlerProps) {
-    Object.keys(panels).map(pl => panels[pl].visible(pl === currentPanel.get()));
+  function setPanel(pl: PanelKeyType) {
+    currentPanel.set(pl);
+  }
 
-    const panel = panels[currentPanel.get()];
+  function handler({ text, enter, complete }: HandlerProps) {
+    hidPanels();
+
+    const panel = pls[currentPanel.get()];
+    panel.visible(true);
     placeholder.set(panel.placeholder || '');
 
     if (enter) {
@@ -72,14 +82,14 @@ export default function Launcher() {
   function setup(self: Widget.Window) {
     self.connect('notify::visible', ({ visible }) => {
       if (!visible) {
-        Object.values(panels).map(p => p?.reload?.());
+        Object.values(pls).map(p => p?.reload?.());
         setText('');
       }
     });
     handler({ text: '' });
   }
 
-  const Panel = ({ label, icon, panel }: { label: Widget.LabelProps['label']; icon: Widget.IconProps['icon']; panel?: keyof typeof panels }) => {
+  const Panel = ({ label, icon, panel }: { label: Widget.LabelProps['label']; icon: Widget.IconProps['icon']; panel?: PanelKeyType }) => {
     return (
       <box hexpand halign={CENTER}>
         <Button
@@ -102,7 +112,7 @@ export default function Launcher() {
   };
 
   const win = (
-    <PopupWindow name="launcher" namespace="launcher" position={layout} setup={setup}>
+    <PopupWindow name="launcher" namespace="launcher" position={layout} setup={setup} onDestroy={() => currentPanel.drop()}>
       <box vertical>
         <PopupPadding onClick={hide}>
           <box canFocus css={margin(s => `min-height: ${s}rem`)} />
@@ -118,7 +128,7 @@ export default function Launcher() {
             <box vertical className={separator(s => `Launcher separator-${s}`)}>
               <Search text={text} position={position} placeholder={placeholder} handler={handler} />
               <box vertical className="Body" css={width(s => `min-width: ${s}pt`)}>
-                {Object.values(panels)
+                {Object.values(pls)
                   .filter(i => i?.ui)
                   .map(i => i!.ui)}
               </box>
@@ -129,5 +139,5 @@ export default function Launcher() {
     </PopupWindow>
   );
 
-  return Object.assign(win, { setText });
+  return Object.assign(win, { setText, setPanel });
 }

@@ -1,14 +1,14 @@
 import options from 'options';
 import Launcher from './Launcher';
+import { PanelKeyType } from './panel';
 
 export default function launcher() {
   const launcher = Launcher();
 
   Object.assign(globalThis, {
-    launcher(prefix: string) {
+    launcher(panel: PanelKeyType) {
       launcher.show();
-      launcher.setText(`:`);
-      if (prefix) launcher.setText(`:${prefix} `);
+      launcher.setPanel(panel);
     },
   });
 

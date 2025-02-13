@@ -3,10 +3,14 @@ import { Gtk, Widget } from 'astal/gtk3';
 import appLauncher from './applauncher';
 import cmd from './cmd';
 
-export const panels = {
-  app: makePanel(appLauncher),
-  cmd: makePanel(cmd),
+export const panels = () => {
+  return {
+    app: makePanel(appLauncher),
+    cmd: makePanel(cmd),
+  };
 };
+
+export type PanelKeyType = keyof ReturnType<typeof panels>;
 
 function makePanel(panel: () => Panel) {
   const { ui, ...pl } = panel();

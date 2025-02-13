@@ -14,6 +14,5 @@ main(
     import('../widgets/quicksettings'),
     import('../widgets/clipboard'),
     import('../widgets/datemenu'),
-    /* import('./info'), */
   ),
 );
