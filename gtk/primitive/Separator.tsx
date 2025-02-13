@@ -5,11 +5,11 @@ import { scss } from 'core/theme';
 import { Size } from '../theme';
 
 void scss`separator.Separator {
-    @include margin;
+  @include margin;
 
-    min-width: $border-width;
-    min-height: $border-width;
-    background-color: $border-color;
+  min-width: $border-width;
+  min-height: $border-width;
+  background-color: $border-color;
 }`;
 
 class GtkSeparator extends astalify(Gtk.Separator) {

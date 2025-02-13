@@ -51,17 +51,10 @@ export default mkOptions('config', {
       enable: opt(false),
       fps: opt(165),
     },
-    tmux: {
-      enable: opt(false),
-      cmd: opt('tmux set @main_accent "{hex}"'),
-    },
-    gsettings: {
-      enable: opt(true),
-    },
   },
   bar: {
     bold: opt(true),
-    position: opt<'top' | 'bottom'>('top'),
+    anchor: opt<'top' | 'bottom'>('top'),
     corners: opt<'none' | 'sm' | 'md' | 'lg' | 'xl'>('md'),
     transparent: opt(false),
     layout: {
@@ -128,32 +121,23 @@ export default mkOptions('config', {
     },
   },
   launcher: {
-    width: opt(0),
+    anchor: opt<Array<'top' | 'bottom' | 'left' | 'center' | 'right'>>(['top', 'center']),
+    width: opt(35),
     separator: opt<'none' | 'padded' | 'full'>('padded'),
-    margin: opt(70),
+    margin: opt(7),
 
-    default: {
+    app: {
       maxItems: opt(7),
+      placeholder: opt('Search applications...'),
       icon: {
         size: opt(4),
         monochrome: opt(false),
       },
     },
-
-    dock: {
-      enable: opt(true),
-      action: opt('akir -t drawer'),
-      icon: {
-        size: opt(4),
-        monochrome: opt(false),
-      },
-      display: opt<number | Array<string>>(['IDEA', 'code', 'firefox', 'telegram', 'typora', 'Spotify']),
-    },
-
-    sh: {
-      enable: opt(true),
-      prefix: opt('sh'),
-      maxItems: opt(12),
+    cmd: {
+      placeholder: opt('Search commands...'),
+      height: opt(4),
+      maxItems: opt(10),
     },
   },
   powermenu: {
@@ -204,6 +188,15 @@ export default mkOptions('config', {
       { dark: '#9077e7', light: '#8861dd' },
       { dark: '#ffffff', light: '#080808' },
     ]),
+  },
+  dock: {
+    anchor: opt<'top' | 'bottom'>('bottom'),
+    action: opt('akir -t drawer'),
+    icon: {
+      size: opt(3.5),
+      monochrome: opt(false),
+    },
+    display: opt<number | Array<string>>(['IDEA', 'code', 'firefox', 'telegram', 'typora', 'Spotify']),
   },
   drawer: {
     rowSize: opt(11),

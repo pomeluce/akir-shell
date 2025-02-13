@@ -1,21 +1,17 @@
-import { Binding, Variable } from 'astal';
 import Apps from 'gi://AstalApps';
+import { Binding, Variable } from 'astal';
+import Box from 'gtk/primitive/Box';
 import AppButton from './AppButton';
 import Separator from 'gtk/primitive/Separator';
-import Box from 'gtk/primitive/Box';
 import { scss } from 'core/theme';
 
 void scss`.Launcher .ApplicationList {
-    /* md Separator spacing */
-    margin-top: -$spacing * .4;
+  margin-top: -$spacing * .4;
 }`;
 
-type Props = {
-  list: Binding<Array<Apps.Application>>;
-  visible: Binding<Array<string>>;
-};
+type Props = { list: Binding<Array<Apps.Application>>; visible: Binding<Array<string>> };
 
-export default function ApplicationList({ list, visible }: Props) {
+export default function AppLauncher({ list, visible }: Props) {
   const nonempty = Variable.derive([list, visible], (l, v) => l.filter(app => v.includes(app.entry!)).length > 0);
 
   return (

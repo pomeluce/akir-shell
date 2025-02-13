@@ -21,7 +21,7 @@ void scss`.DateMenu {
 
 const { bar, datemenu } = options;
 
-const layout = derive([bar.position, datemenu.position], (bar, qs) => `${bar}_${qs}` as const);
+const layout = derive([bar.anchor, datemenu.position], (bar, qs) => `${bar}_${qs}` as const);
 
 export default function DateMenu() {
   return (

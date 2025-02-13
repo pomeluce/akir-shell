@@ -71,7 +71,7 @@ export default function Bar(monitor: Gdk.Monitor) {
   const top = Astal.WindowAnchor.TOP | lr;
   const bottom = Astal.WindowAnchor.BOTTOM | lr;
 
-  const { transparent, bold, position, layout } = options.bar;
+  const { transparent, bold, anchor, layout } = options.bar;
   const { start, center, end } = layout;
 
   const className = Variable.derive([transparent, bold], (t, b) =>
@@ -88,7 +88,7 @@ export default function Bar(monitor: Gdk.Monitor) {
       namespace="bar"
       application={App}
       gdkmonitor={monitor}
-      anchor={position(p => (p === 'top' ? top : bottom))}
+      anchor={anchor(p => (p === 'top' ? top : bottom))}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       onDestroy={() => className.drop()}
     >

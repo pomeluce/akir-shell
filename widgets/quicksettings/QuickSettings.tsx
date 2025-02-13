@@ -74,7 +74,7 @@ const {
   bar,
   quicksettings: { width, position },
 } = options;
-const layout = derive([bar.position, position], (bar, qs) => `${bar}_${qs}` as const);
+const layout = derive([bar.anchor, position], (bar, qs) => `${bar}_${qs}` as const);
 
 const SiderBox = () => (
   <Box className="raised" valign={FILL} vertical px="2xl" py="2xl" gap="2xl" r="2xl">

@@ -4,8 +4,8 @@ import Button from 'gtk/primitive/Button';
 import Box from 'gtk/primitive/Box';
 import Icon from 'gtk/primitive/Icon';
 import { scss } from 'core/theme';
-import { execAsync } from 'astal';
 import options from 'options';
+import { appLunch } from 'core/lib/app';
 
 void scss`.Launcher .AppButton {
   label.name {
@@ -20,7 +20,7 @@ void scss`.Launcher .AppButton {
 }`;
 
 export default function AppButton({ app }: { app: Apps.Application }) {
-  const { icon } = options.launcher.default;
+  const { icon } = options.launcher.app;
 
   return (
     <Button
@@ -29,8 +29,7 @@ export default function AppButton({ app }: { app: Apps.Application }) {
       hexpand
       className="AppButton"
       onClicked={() => {
-        const isGnome = app.iconName.includes('org.gnome');
-        isGnome ? execAsync(app.executable.split(' ')[0]).catch(console.error) : app.launch();
+        appLunch(app);
         App.get_window('launcher')!.hide();
       }}
     >

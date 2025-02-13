@@ -1,13 +1,11 @@
-import type { Plugin } from '../plugin';
-import { Variable, GLib } from 'astal';
-import { writeFileAsync } from 'astal/file';
-import { exec, execAsync } from 'astal/process';
-import { dependencies, mkdir, bash } from 'core/lib/os';
-import Sh from './Sh';
 import options from 'options';
+import { Panel } from '../panel';
+import { bash, dependencies, mkdir } from 'core/lib/os';
+import { exec, execAsync, GLib, Variable, writeFileAsync } from 'astal';
+import CMD from './CMD';
 
-export default function sh(): Plugin {
-  const { maxItems } = options.launcher.sh;
+export default function cmd(): Panel {
+  const { maxItems, placeholder } = options.launcher.cmd;
 
   if (!dependencies('fzf')) {
     throw Error('missing dependency: fzf');
@@ -24,24 +22,18 @@ export default function sh(): Plugin {
   const bins = Variable<Array<string>>([]);
 
   return {
-    description: 'Run executables from PATH',
-    icon: {
-      icon: 'utilities-terminal',
-      color: 'success',
-    },
-    ui: Sh(bins),
+    ui: CMD(bins),
+    placeholder: placeholder.get(),
     search(search: string) {
       if (!search) bins.set(binaries.split('\n').slice(maxItems.get()));
 
-      bash`cat ${binaries} | fzf -f "${search}" | head -n ${maxItems.get()}`
+      bash(`cat ${binaries} | fzf -f "${search}" | head -n ${maxItems.get()}`)
         .then(str => {
           bins.set(Array.from(new Set(str.split('\n')).values()).filter(Boolean));
         })
         .catch(() => bins.set([]));
     },
-    enter(entered: string) {
-      bash(entered).catch(console.error);
-    },
+    enter: (entered: string) => bash(entered).catch(console.error),
     complete(search: string) {
       const res = exec(['bash', '-c', `cat ${binaries} | fzf -f "${search}" | head -n 1`]);
       return res === search ? '' : res;

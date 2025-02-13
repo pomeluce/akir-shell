@@ -1,12 +1,15 @@
-import { Astal, Gdk, App, Widget } from 'astal/gtk3';
+import { App, Widget } from 'astal/gtk3';
 import { Variable } from 'astal';
 import PopupBin from 'gtk/primitive/PopupBin';
 import PopupPadding from 'gtk/primitive/PopupPadding';
 import Search from './Search';
-import Help from './Help';
-import plugins from './plugins/plugin';
 import { scss } from 'core/theme';
 import options from 'options';
+import Box from 'gtk/primitive/Box';
+import PopupWindow, { LayoutType } from 'gtk/primitive/PopupWindow';
+import Icon from 'gtk/primitive/Icon';
+import Button from 'gtk/primitive/Button';
+import { panels } from './panel';
 
 void scss`.Launcher {
   &.separator-padded separator {
@@ -20,164 +23,110 @@ void scss`.Launcher {
   }
 }`;
 
+// main search handler logic
+interface HandlerProps {
+  text: string;
+  enter?: boolean;
+  complete?: boolean;
+}
+
 function hide() {
   App.get_window('launcher')!.hide();
 }
 
 export default function Launcher() {
-  const plugs = plugins();
-  const { separator, width, margin } = options.launcher;
+  const currentPanel = Variable<keyof typeof panels>('app');
 
-  const showHelp = Variable(false);
+  const { separator, width, margin, anchor } = options.launcher;
+
+  const layout = anchor(([v1, v2]) => `${v1}_${v2}` as LayoutType);
+
   const text = Variable('');
   const position = Variable(0);
-
-  function hidePlugins() {
-    Object.values(plugs.get()).map(p => p?.visible(false));
-  }
+  const placeholder = Variable('');
 
   function setText(str: string) {
     text.set(str);
     position.set(str.length);
   }
 
-  // main search handler logic
-  interface HandlerProps {
-    text: string;
-    enter?: boolean;
-    complete?: boolean;
-  }
-
   function handler({ text, enter, complete }: HandlerProps) {
-    const plugins = plugs.get();
+    Object.keys(panels).map(pl => panels[pl].visible(pl === currentPanel.get()));
 
-    const help = () => {
-      hidePlugins();
-      showHelp.set(true);
-      if (enter) hide();
-    };
+    const panel = panels[currentPanel.get()];
+    placeholder.set(panel.placeholder || '');
 
-    // dock, empty search
-    if (text === '') {
-      hidePlugins();
-      showHelp.set(false);
-      plugins.dock?.visible(true);
-      if (enter) hide();
-    }
-
-    // help
-    else if (text === '?' || text === ':') {
-      help();
-    }
-
-    // plugins
-    else if (text?.startsWith(':')) {
-      showHelp.set(false);
-
-      const index = text.indexOf(' ');
-      const prefix = text.substring(1, index);
-      const search = text.substring(index).trim();
-      const plugin = plugins[prefix as keyof typeof plugins];
-
-      // do plugin
-      if (plugin) {
-        if (enter) {
-          plugin.enter(search);
-        } else if (complete && plugin.complete) {
-          const res = plugin.complete(search);
-          if (res != '') {
-            setText(`:${prefix} ${plugin.complete(search)}`);
-            return true;
-          }
-        } else {
-          plugin.search(search);
-          plugin.visible(true);
-        }
+    if (enter) {
+      panel.enter(text);
+    } else if (complete && panel.complete) {
+      const result = panel.complete(text);
+      if (result !== '') {
+        setText(result);
+        return true;
       }
-
-      // plugin not found, help
-      else {
-        help();
-      }
+    } else {
+      panel.search(text);
     }
-
-    // default
-    else {
-      plugins.dock?.visible(false);
-      plugins.default.visible(true);
-      if (enter) {
-        plugins.default.enter(text);
-      } else if (complete && plugins.default.complete) {
-        const c = plugins.default.complete(text);
-        if (c !== '') {
-          setText(c);
-          return true;
-        }
-      } else {
-        plugins.default.search(text);
-      }
-    }
-  }
-
-  function selectPlugin(prefix: string) {
-    setText(`:${prefix} `);
   }
 
   function setup(self: Widget.Window) {
     self.connect('notify::visible', ({ visible }) => {
       if (!visible) {
-        Object.values(plugs.get()).map(p => p?.reload?.());
+        Object.values(panels).map(p => p?.reload?.());
         setText('');
       }
     });
     handler({ text: '' });
   }
 
+  const Panel = ({ label, icon, panel }: { label: Widget.LabelProps['label']; icon: Widget.IconProps['icon']; panel?: keyof typeof panels }) => {
+    return (
+      <box hexpand halign={CENTER}>
+        <Button
+          flat
+          suggested
+          className={currentPanel(v => (v === panel ? 'active' : ''))}
+          onClicked={() => {
+            if (panel) currentPanel.set(panel);
+            handler({ text: '' });
+          }}
+          canFocus={false}
+        >
+          <Box p="xl" gap="xl">
+            <Icon symbolic icon={icon} />
+            <label label={label} />
+          </Box>
+        </Button>
+      </box>
+    );
+  };
+
   const win = (
-    <window
-      visible={false}
-      namespace="launcher"
-      css="background-color: transparent"
-      name="launcher"
-      application={App}
-      anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
-      exclusivity={Astal.Exclusivity.IGNORE}
-      keymode={Astal.Keymode.ON_DEMAND}
-      setup={setup}
-      onKeyPressEvent={function (_, event: Gdk.Event) {
-        if (event.get_keyval()[1] === Gdk.KEY_Escape) hide();
-      }}
-    >
-      <box>
-        <PopupPadding h onClick={hide} width={100} />
-        <box vertical>
-          <PopupPadding onClick={hide}>
-            <box css={margin(s => `min-height: ${s}pt`)} />
-          </PopupPadding>
-          <PopupBin r="md">
+    <PopupWindow name="launcher" namespace="launcher" position={layout} setup={setup}>
+      <box vertical>
+        <PopupPadding onClick={hide}>
+          <box canFocus css={margin(s => `min-height: ${s}rem`)} />
+        </PopupPadding>
+        <PopupBin r="md" css={width(s => `min-width: ${s}rem`)}>
+          <Box vertical p="2xl" mt="2xl">
+            <centerbox>
+              <Panel label="Apps" icon="preferences-desktop-apps" panel="app" />
+              <Panel label="ClipBoard" icon="clipboard" />
+              <Panel label="CMD" icon="utilities-terminal" panel="cmd" />
+            </centerbox>
+
             <box vertical className={separator(s => `Launcher separator-${s}`)}>
-              <Search text={text} position={position} handler={handler}>
-                {plugs(plugins =>
-                  Object.values(plugins)
-                    .filter(i => i?.icon)
-                    .map(i => i!.icon),
-                )}
-              </Search>
+              <Search text={text} position={position} placeholder={placeholder} handler={handler} />
               <box vertical className="Body" css={width(s => `min-width: ${s}pt`)}>
-                <Help plugins={plugs} visible={showHelp()} onClicked={selectPlugin} />
-                {plugs(plugins =>
-                  Object.values(plugins)
-                    .filter(i => i?.ui)
-                    .map(i => i!.ui),
-                )}
+                {Object.values(panels)
+                  .filter(i => i?.ui)
+                  .map(i => i!.ui)}
               </box>
             </box>
-          </PopupBin>
-          <PopupPadding v onClick={hide} />
-        </box>
-        <PopupPadding h onClick={hide} width={100} />
+          </Box>
+        </PopupBin>
       </box>
-    </window>
+    </PopupWindow>
   );
 
   return Object.assign(win, { setText });

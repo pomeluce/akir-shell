@@ -17,10 +17,11 @@ type Props = {
   handler: (arg: { text: string; complete?: boolean; enter?: boolean }) => void;
   text: Variable<string>;
   position: Variable<number>;
+  placeholder: Variable<string>;
   child?: JSX.Element;
 };
 
-export default function Search({ handler, text, position, child }: Props) {
+export default function Search({ handler, text, position, placeholder, child }: Props) {
   return (
     <box className="Search" expand={false}>
       <SearchEntry
@@ -38,7 +39,7 @@ export default function Search({ handler, text, position, child }: Props) {
           }
         }}
         text={text()}
-        placeholder={'Type ":" to list subcommands'}
+        placeholder={placeholder()}
         setup={self => {
           idle(() => self.focus()); // focus at startup
 

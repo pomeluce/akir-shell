@@ -9,8 +9,10 @@ main(
     import('../widgets/powermenu'),
     import('../widgets/osd'),
     import('../widgets/notifications'),
+    import('../widgets/dock'),
     import('../widgets/drawer'),
     import('../widgets/quicksettings'),
+    import('../widgets/clipboard'),
     import('../widgets/datemenu'),
     /* import('./info'), */
   ),

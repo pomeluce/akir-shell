@@ -1,4 +1,5 @@
 import { App } from 'astal/gtk3';
+import { appLunch } from 'core/lib/app';
 import type Apps from 'gi://AstalApps';
 import Box from 'gtk/primitive/Box';
 import Button from 'gtk/primitive/Button';
@@ -12,7 +13,7 @@ export default function AppButton({ app }: { app: Apps.Application }) {
       m="2xl"
       tooltipText={app.description}
       onClicked={() => {
-        app.launch();
+        appLunch(app);
         App.get_window('drawer')!.visible = false;
       }}
     >

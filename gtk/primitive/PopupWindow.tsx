@@ -14,7 +14,7 @@ void scss`.PopupWindow {
   }
 }`;
 
-type LayoutType = 'top' | 'top_center' | 'top_left' | 'top_right' | 'bottom' | 'bottom_center' | 'bottom_left' | 'bottom_right' | 'center';
+export type LayoutType = 'top' | 'top_center' | 'top_left' | 'top_right' | 'bottom' | 'bottom_center' | 'bottom_left' | 'bottom_right' | 'center';
 
 function Layout({ child, position, onClick }: { position: LayoutType | Binding<LayoutType>; onClick: () => void; child?: JSX.Element }) {
   position instanceof Binding && (position = position.get());

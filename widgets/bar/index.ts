@@ -18,7 +18,7 @@ export default () => {
       msg('keyword layerrule noanim,bar');
       msg('keyword layerrule noanim,corners');
 
-      Variable.derive([theme.spacing, theme.hyprland.gapsMultiplier, bar.transparent, bar.position], (gaps, mul, tr, pos) => {
+      Variable.derive([theme.spacing, theme.hyprland.gapsMultiplier, bar.transparent, bar.anchor], (gaps, mul, tr, pos) => {
         const bar = bars[0].get_allocated_height();
         const gap = gaps * mul;
         const r = gap > bar ? -bar : -(gap * 0.9);
