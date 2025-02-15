@@ -12,7 +12,6 @@ main(
     import('../widgets/dock'),
     import('../widgets/drawer'),
     import('../widgets/quicksettings'),
-    import('../widgets/clipboard'),
     import('../widgets/datemenu'),
   ),
 );

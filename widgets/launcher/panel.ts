@@ -1,11 +1,13 @@
 import { idle, Variable } from 'astal';
 import { Gtk, Widget } from 'astal/gtk3';
 import appLauncher from './applauncher';
+import clipboard from './clipboard';
 import cmd from './cmd';
 
 export const panels = () => {
   return {
     app: makePanel(appLauncher),
+    clipboard: makePanel(clipboard),
     cmd: makePanel(cmd),
   };
 };

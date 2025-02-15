@@ -9,6 +9,7 @@ import SysTray from './buttons/SysTray';
 import SystemIndicators from './buttons/SystemIndicators';
 import Messages from './buttons/Messages';
 import ScreenRecord from './buttons/ScreenRecord';
+import ColorPicker from './buttons/ColorPicker';
 import { Variable } from 'astal';
 import { App, Astal, Gdk } from 'astal/gtk3';
 import { scss } from 'core/theme';
@@ -42,6 +43,7 @@ export type BarWidget =
   | 'launcher'
   | 'media'
   | 'powermenu'
+  | 'colorpicker'
   | 'systray'
   | 'system'
   | 'taskbar' // Hyprland only
@@ -52,7 +54,7 @@ export type BarWidget =
 
 const widget: Record<BarWidget, () => JSX.Element> = {
   battery: Battery,
-  // colorpicker: ColorPicker,
+  colorpicker: ColorPicker,
   date: Date,
   launcher: Launcher,
   media: Media,

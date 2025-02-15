@@ -60,7 +60,7 @@ export default mkOptions('config', {
     layout: {
       start: opt<Array<BarWidget>>(['launcher', 'workspaces', 'taskbar', 'spacer', 'messages']),
       center: opt<Array<BarWidget>>(['date']),
-      end: opt<Array<BarWidget>>(['media', 'spacer', 'systray', /* "colorpicker", */ 'screenrecord', 'system', 'battery', 'powermenu']),
+      end: opt<Array<BarWidget>>(['media', 'spacer', 'systray', 'colorpicker', 'screenrecord', 'system', 'battery', 'powermenu']),
     },
     launcher: {
       suggested: opt(false),
@@ -95,6 +95,11 @@ export default mkOptions('config', {
     messages: {
       flat: opt(true),
       action: opt(`akir -t datemenu`),
+    },
+    colorpicker: {
+      flat: opt(true),
+      maxItems: opt(10),
+      label: opt('Color Picker'),
     },
     systray: {
       flat: opt(true),
@@ -133,6 +138,11 @@ export default mkOptions('config', {
         size: opt(4),
         monochrome: opt(false),
       },
+    },
+    clipboard: {
+      maxItems: opt(10),
+      height: opt(4),
+      placeholder: opt('Search clipboard...'),
     },
     cmd: {
       placeholder: opt('Search commands...'),

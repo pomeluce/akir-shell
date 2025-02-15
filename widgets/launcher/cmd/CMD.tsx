@@ -8,6 +8,7 @@ import options from 'options';
 
 export default function CMD(bins: Variable<Array<string>>) {
   const { height } = options.launcher.cmd;
+
   return (
     <revealer revealChild={bins(b => b.length > 0)} transitionType={SLIDE_DOWN}>
       <Box vertical className="CMD" pb="2xl">

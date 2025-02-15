@@ -122,7 +122,7 @@ export default function Launcher() {
           <Box vertical p="2xl" mt="2xl">
             <centerbox>
               <Panel label="Apps" icon="preferences-desktop-apps" panel="app" />
-              <Panel label="ClipBoard" icon="clipboard" />
+              <Panel label="ClipBoard" icon="clipboard" panel="clipboard" />
               <Panel label="CMD" icon="utilities-terminal" panel="cmd" />
             </centerbox>
 
