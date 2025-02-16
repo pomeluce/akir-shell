@@ -41,8 +41,10 @@ export default class Cliphist extends GObject.Object {
     }
   }
 
+  // $ > / ' "" ' "' " `&|<\&& ||
   select(selected: string) {
-    sh(`echo '${selected}' | cliphist decode | wl-copy`);
+    const escaped = selected.replace(/'/g, "'\\''");
+    sh(`echo '${escaped}' | cliphist decode | wl-copy`);
   }
 
   query(term: string) {
