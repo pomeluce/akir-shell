@@ -73,7 +73,7 @@ export default function ClipBoard(cliphist: Cliphist, history: Variable<string[]
                 }}
               >
                 <Box m="md" px="2xl" css={height(h => `min-height: ${h}rem;`)}>
-                  <label wrap xalign={0} label={h} maxWidthChars={60} />
+                  <label wrap xalign={0} label={h} maxWidthChars={58} />
                 </Box>
               </FlatButton>
             </box>
