@@ -39,7 +39,7 @@ export default function AppButton({ app }: { app: Apps.Application }) {
         </Box>
         <Box pr="lg" vertical valign={CENTER}>
           <label className="name" halign={START} label={app.name} truncate />
-          {app.description && <label xalign={0} className="description" wrap label={app.description} />}
+          {app.description && <label xalign={0} className="description" wrap label={app.description} maxWidthChars={58} />}
         </Box>
       </box>
     </Button>
