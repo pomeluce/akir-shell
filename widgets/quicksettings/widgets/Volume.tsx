@@ -65,7 +65,7 @@ function SinkItem({ stream }: { stream: Wp.Endpoint }) {
       <Button flat hfill onClicked={() => (stream.isDefault = true)}>
         <Box px="2xl" py="xl">
           <Icon symbolic className="primary" css="margin-right: .3em" fallback="audio-speakers" icon={bind(stream, 'icon')} />
-          <label truncate hexpand halign={START} label={bind(stream, 'description')} />
+          <label truncate hexpand halign={START} label={bind(stream, 'description')} maxWidthChars={30} />
           <Icon symbolic className="primary" css="margin-left: .3em" halign={END} visible={bind(stream, 'isDefault')} icon="object-select" />
         </Box>
       </Button>
