@@ -24,7 +24,7 @@
 ### Installed
 
 ```shell
-pacman/yay -S aylurs-gtk-shell libastal-io-git libastal-git hyprpicker brightnessctl wl-clipboard wf-recorder wayshot slurp swappy cliphist matugen-bin
+pacman/yay -S aylurs-gtk-shell libastal-meta hyprpicker brightnessctl wl-clipboard wf-recorder wayshot slurp swappy cliphist matugen-bin
 ```
 
 ## Quick Start Guide
