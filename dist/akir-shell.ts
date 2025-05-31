@@ -2,7 +2,7 @@
 import { main, run } from 'gtk/main';
 
 main(
-  'akir',
+  'akir-shell',
   run(
     import('../widgets/launcher'),
     import('../widgets/bar'),

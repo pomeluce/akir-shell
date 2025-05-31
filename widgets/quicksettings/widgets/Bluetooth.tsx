@@ -76,7 +76,7 @@ export const BluetoothDevices = () => {
       <Separator my="md" />
       <button onClicked={() => sh(quicksettings.bluetooth.get())}>
         <Box px="2xl" gap="md">
-          <Icon symbolic icon="emblem-system" />
+          <Icon symbolic icon="applications-system" />
           <label label="Bluetooth" />
         </Box>
       </button>

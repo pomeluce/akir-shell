@@ -116,7 +116,7 @@ const AudioSettings = () => (
     }}
   >
     <Box px="2xl" gap="md">
-      <Icon symbolic icon="emblem-system" />
+      <Icon symbolic icon="applications-system" />
       <label label="Settings" />
     </Box>
   </button>

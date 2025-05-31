@@ -1,0 +1,76 @@
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    ags = {
+      url = "github:aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { self, nixpkgs, ags }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+      rev = self.rev or self.dirtyRev;
+
+      nativeBuildInputs = with pkgs; [
+        wrapGAppsHook
+        gobject-introspection
+        (ags.packages.${system}.default.override {
+          extraPackages = buildInputs;
+        })
+      ];
+
+      buildInputs = (with ags.packages.${system}; [
+        io
+        astal3
+        apps
+        auth
+        battery
+        bluetooth
+        hyprland
+        mpris
+        network
+        notifd
+        powerprofiles
+        tray
+        wireplumber
+      ]) ++ (with pkgs; [ gjs libadwaita ]);
+
+      mkPackage = name:
+        pkgs.stdenvNoCC.mkDerivation {
+          inherit nativeBuildInputs buildInputs;
+
+          pname = name;
+          version = "git";
+          src = ./.;
+
+          installPhase = ''
+            mkdir -p $out/bin
+            ags bundle dist/${name}.ts $out/bin/${name} --define "VERSION='${
+              builtins.substring 0 7 rev
+            }'"
+          '';
+
+          preFixup = ''
+             gappsWrapperArgs+=(
+              --prefix PATH : ${
+                with pkgs;
+                lib.makeBinPath (buildInputs ++ [ dart-sass fzf gtk3 ])
+              }
+            )
+          '';
+        };
+
+    in {
+
+      packages.${system} = {
+        default = self.packages.${system}.marble;
+        astal = ags.packages.${system}.io;
+
+        akir-shell = mkPackage "akir-shell";
+        screenrecord = mkPackage "screenrecord";
+        screenshot = mkPackage "screenshot";
+      };
+    };
+}

@@ -81,7 +81,7 @@ export function WifiSelection() {
       <Separator my="md" />
       <button onClicked={() => sh(quicksettings.network.get())}>
         <Box px="2xl" gap="md">
-          <Icon symbolic icon="emblem-system" />
+          <Icon symbolic icon="applications-system" />
           <label label="Network" />
         </Box>
       </button>
