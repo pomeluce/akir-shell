@@ -56,7 +56,26 @@
              gappsWrapperArgs+=(
               --prefix PATH : ${
                 with pkgs;
-                lib.makeBinPath (buildInputs ++ [ dart-sass fzf gtk3 ])
+                lib.makeBinPath (buildInputs ++ [
+                  gtk3
+                  dart-sass
+                  fzf
+                  hyprpicker
+                  brightnessctl
+                  wl-clipboard
+                  wf-recorder
+                  wayshot
+                  slurp
+                  swappy
+                  cliphist
+                  pipewire
+                  wireplumber
+                  gnome-control-center
+                  gnome-calendar
+                  swww
+                  networkmanager
+                  matugen
+                ])
               }
             )
           '';

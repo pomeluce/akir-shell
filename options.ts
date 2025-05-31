@@ -69,12 +69,12 @@ export default mkOptions('config', {
       flat: opt(true),
       icon: opt(GLib.get_os_info('LOGO') || 'system-search-symbolic'),
       label: opt('Applications'),
-      action: opt('akir -t launcher'),
+      action: opt('akir-shell -t launcher'),
     },
     date: {
       flat: opt(true),
       format: opt('%m-%d %H:%M:%S - %A'),
-      action: opt(`akir -t datemenu`),
+      action: opt(`akir-shell -t datemenu`),
       label: opt('Calendar'),
     },
     battery: {
@@ -96,7 +96,7 @@ export default mkOptions('config', {
     },
     messages: {
       flat: opt(true),
-      action: opt(`akir -t datemenu`),
+      action: opt(`akir-shell -t datemenu`),
     },
     colorpicker: {
       flat: opt(true),
@@ -119,11 +119,11 @@ export default mkOptions('config', {
     powermenu: {
       suggested: opt(true),
       flat: opt(true),
-      action: opt('akir -t powermenu'),
+      action: opt('akir-shell -t powermenu'),
     },
     systemIndicators: {
       flat: opt(true),
-      action: opt(`akir -t quicksettings`),
+      action: opt(`akir-shell -t quicksettings`),
       label: opt('System Indicators'),
     },
   },
@@ -203,7 +203,7 @@ export default mkOptions('config', {
   },
   dock: {
     anchor: opt<'top' | 'bottom'>('bottom'),
-    action: opt('akir -t drawer'),
+    action: opt('akir-shell -t drawer'),
     icon: {
       size: opt(3.5),
       monochrome: opt(false),
