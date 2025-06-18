@@ -24,6 +24,7 @@
       buildInputs = (with ags.packages.${system}; [
         io
         astal3
+        astal4
         apps
         auth
         battery
