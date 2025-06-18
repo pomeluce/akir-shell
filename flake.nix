@@ -74,6 +74,7 @@
                   wireplumber
                   gnome-control-center
                   gnome-calendar
+                  gnome-bluetooth
                   swww
                   networkmanager
                   matugen
