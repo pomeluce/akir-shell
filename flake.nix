@@ -59,6 +59,7 @@
                 with pkgs;
                 lib.makeBinPath (buildInputs ++ [
                   gtk3
+                  gtk4
                   dart-sass
                   fzf
                   hyprpicker
