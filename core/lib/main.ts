@@ -53,7 +53,7 @@ export async function start(props: MainProps) {
 
   App.start({
     instanceName,
-    gtkTheme: 'WhiteSur-Dark',
+    // gtkTheme: 'WhiteSur-Dark',
     requestHandler(request, res) {
       const [cmd, ...args] = request.split(/\s+/);
       switch (cmd) {
