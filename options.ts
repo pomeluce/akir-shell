@@ -26,6 +26,10 @@ export default mkOptions('config', {
     scheme: {
       enable: opt(true),
       mode: opt<'dark' | 'light'>('dark'),
+      theme: {
+        light: opt('WhiteSur-Light'),
+        dark: opt('WhiteSur-Dark'),
+      },
     },
     widget: {
       opacity: opt(94),
