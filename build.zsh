@@ -34,6 +34,6 @@ build() {
   fi
 }
 
-build akir false
+build akir-shell false
 build screenrecord false
 build screenshot false
