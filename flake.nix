@@ -87,7 +87,7 @@
     in {
 
       packages.${system} = {
-        default = self.packages.${system}.marble;
+        default = self.packages.${system}.akir-shell;
         astal = ags.packages.${system}.io;
 
         akir-shell = mkPackage "akir-shell";
