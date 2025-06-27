@@ -52,7 +52,7 @@ export default mkOptions('config', {
       gapsMultiplier: opt(1.7),
     },
     swww: {
-      enable: opt(true),
+      enable: opt(false),
       fps: opt(165),
       wp: opt(`${GLib.get_user_config_dir()}/wallpapers`),
       interval: opt(300),
