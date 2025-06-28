@@ -48,7 +48,7 @@
 
           installPhase = ''
             mkdir -p $out/bin
-            ags bundle dist/${name}.ts $out/bin/${name} --define "VERSION='${
+            ags --gtk 3 bundle dist/${name}.ts $out/bin/${name} --define "VERSION='${
               builtins.substring 0 7 rev
             }'"
           '';
