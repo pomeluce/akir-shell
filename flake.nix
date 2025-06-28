@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     ags = {
-      url = "github:aylur/ags";
+      url = "github:aylur/ags/045f25bc1c098acee2ad618368bcc6a42f9f35aa";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -48,7 +48,7 @@
 
           installPhase = ''
             mkdir -p $out/bin
-            ags --gtk 3 bundle dist/${name}.ts $out/bin/${name} --define "VERSION='${
+            ags bundle dist/${name}.ts $out/bin/${name} --define "VERSION='${
               builtins.substring 0 7 rev
             }'"
           '';
