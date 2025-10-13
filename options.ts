@@ -212,7 +212,7 @@ export default mkOptions('config', {
       size: opt(3.5),
       monochrome: opt(false),
     },
-    display: opt<number | Array<string>>(['IDEA', 'code', 'firefox', 'telegram', 'obsidian', 'Spotify']),
+    display: opt<number | Array<string>>(['IDEA', 'code', 'firefox', 'telegram', 'typora', 'Spotify']),
   },
   drawer: {
     rowSize: opt(11),
