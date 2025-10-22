@@ -5,7 +5,7 @@ main(
   'akir-shell',
   run(
     import('../widgets/launcher'),
-    import('../widgets/bar'),
+    // import('../widgets/bar'),
     import('../widgets/powermenu'),
     import('../widgets/osd'),
     import('../widgets/notifications'),
