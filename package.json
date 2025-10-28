@@ -1,0 +1,9 @@
+{
+  "name": "akir-shell",
+  "author": "pomeluce",
+  "dependencies": {
+    "ags": "*",
+    "gnim": "*",
+    "typescript": "^5.9.3"
+  }
+}
