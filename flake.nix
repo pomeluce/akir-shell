@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     ags = {
-      url = "github:aylur/ags?rev=3ed9737bdbc8fc7a7c7ceef2165c9109f336bff6";
+      url = "github:pomeluce/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
