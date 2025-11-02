@@ -7,6 +7,10 @@
     "lib": ["ES2023"],
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-    "jsxImportSource": "ags/gtk4"
+    "jsxImportSource": "ags/gtk4",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
