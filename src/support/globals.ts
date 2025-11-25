@@ -1,6 +1,25 @@
 import { Gtk } from 'ags/gtk4';
 import Gio from 'gi://Gio?version=2.0';
 import GLib from 'gi://GLib?version=2.0';
+import version from 'inline:../../version';
+
+// DEV
+try {
+  Object.assign(globalThis, { DEV });
+} catch (err) {
+  if (err instanceof ReferenceError) {
+    Object.assign(globalThis, { DEV: true });
+  }
+}
+
+// VERSION
+try {
+  Object.assign(globalThis, { VERSION });
+} catch (err) {
+  if (err instanceof ReferenceError) {
+    Object.assign(globalThis, { VERSION: version.trim() });
+  }
+}
 
 declare global {
   const VERSION: string;

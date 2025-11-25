@@ -1,9 +1,11 @@
 {
-  "name": "akir-shell",
-  "author": "pomeluce",
   "dependencies": {
     "ags": "*",
     "gnim": "*",
     "typescript": "^5.9.3"
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2
   }
 }
