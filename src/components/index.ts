@@ -1,3 +1,9 @@
 export { default as Box } from './box';
 export { default as Button } from './button';
+export { default as FlatButton } from './flat-button';
 export { default as Icon } from './icon';
+export { default as PopupBin } from './popup-bin';
+export { default as PopupWindow } from './popup-window';
+export { default as Separator } from './separator';
+export { default as Slider } from './slider';
+export { default as Spinner } from './spinner';

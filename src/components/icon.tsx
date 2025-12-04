@@ -14,7 +14,7 @@ const { iconSize } = options.theme;
 export default (props: IconProps) => {
   const { fallback = 'image-missing', size = 1, pixelSize = iconSize(), symbolic = false, iconName: iname, css = '', ...prop } = props;
 
-  const style = createComputed([fake(css), fake(size)], (css, size) => `font-size: ${size}em; ${css + css ? ';' : ''}`);
+  const style = createComputed([fake(css), fake(size)], (css, size) => `font-size: ${size}em; ${css + (css && !css.endsWith(';') ? ';' : '')}`);
   const iconName = createComputed([fake(iname), fake(symbolic), fake(fallback)], (i, s, f) => icon($symbolic(i || f!, s!), $symbolic(f!, s!), name => !!lookupIcon(name)));
 
   return <image css={style} iconName={iconName} pixelSize={pixelSize} {...prop} />;

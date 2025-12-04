@@ -1,7 +1,7 @@
 import Bar, { Corners } from '@/widget/bar';
 import { Gtk } from 'ags/gtk4';
-import app from 'ags/gtk4/app';
 import { createComputed } from 'gnim';
+import app from 'ags/gtk4/app';
 import options from 'options';
 
 const { bar, theme } = options;

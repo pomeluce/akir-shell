@@ -122,11 +122,11 @@ export default mkOptions('config', {
     powermenu: {
       suggested: opt(true),
       flat: opt(true),
-      action: opt('akir-shell -t powermenu'),
+      action: opt('ags request toggle powermenu -i akirds'),
     },
     systemIndicators: {
       flat: opt(true),
-      action: opt(`akir-shell -t quicksettings`),
+      action: opt(`ags request toggle quicksettings -i akirds`),
       label: opt('System Indicators'),
     },
   },
@@ -158,7 +158,7 @@ export default mkOptions('config', {
   powermenu: {
     layout: opt<'1x6' | '2x3'>('1x6'),
     labels: opt(true),
-    iconSize: opt(6),
+    iconSize: opt(10),
 
     hibernate: opt('systemctl hibernate'),
     sleep: opt('systemctl suspend'),

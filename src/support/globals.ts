@@ -62,7 +62,7 @@ declare global {
     CROSSFADE: RevealerTransitionType.CROSSFADE,
 
     CACHE: `${GLib.get_user_cache_dir()}/akirds`,
-    CONFIG: GLib.getenv('AKIR_CONFIG') || `${GLib.get_user_config_dir()}/akirds`,
+    CONFIG: GLib.getenv('AKIRDS_CONFIG') || `${GLib.get_user_config_dir()}/akirds`,
     TMP: `${GLib.get_user_runtime_dir()}/akirds`,
     USER: GLib.get_user_name(),
     HOME: GLib.get_home_dir(),

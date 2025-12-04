@@ -26,14 +26,14 @@ void scss`.bar .panel {
     background-color: transparent;
 
     label { text-shadow: $text-shadow; }
-    icon { -gtk-icon-shadow: $text-shadow; }
+    image { -gtk-icon-shadow: $text-shadow; }
   }
 
   &:not(.transparent) {
     background-color: $bg;
 
     label { text-shadow: none; }
-    icon { -gtk-icon-shadow: none; }
+    image { -gtk-icon-shadow: none; }
   }
 }`;
 

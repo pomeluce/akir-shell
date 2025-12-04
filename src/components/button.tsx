@@ -64,15 +64,15 @@ void scss`
     }
   }
 
-  &.active,
-  &:checked {
-    &:hover,
-    &:focus {
-      >box {
-          box-shadow: inset 0 0 0 ($border-width*2) $accent-fg, inset 0 0 0 $border-width $primary;
-      }
-    }
-  }
+  // &.active,
+  // &:checked {
+  //   &:hover,
+  //   &:focus {
+  //     >box {
+  //         box-shadow: inset 0 0 0 ($border-width*2) $accent-fg, inset 0 0 0 $border-width $primary;
+  //     }
+  //   }
+  // }
 }
 
 @mixin regular($bgc, $fgc) {

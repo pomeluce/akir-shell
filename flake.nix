@@ -54,7 +54,7 @@
         # fzf
         hyprpicker
         libnotify
-        # brightnessctl
+        brightnessctl
         wl-clipboard
         # wf-recorder
         # wayshot

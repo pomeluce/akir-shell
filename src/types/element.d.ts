@@ -1,4 +1,4 @@
-import { Gtk } from 'ags/gtk4';
+import { Astal, Gtk } from 'ags/gtk4';
 import { Props } from './widget';
 import { Accessor } from 'gnim';
 
@@ -39,3 +39,39 @@ type BoxProps = Props<Gtk.Box, Gtk.Box.ConstructorProps> &
     vertical: boolean;
     widget: boolean;
   }>;
+
+type LayoutType = 'top' | 'top_center' | 'top_left' | 'top_right' | 'bottom' | 'bottom_center' | 'bottom_left' | 'bottom_right' | 'center';
+
+type PopupWindowProps = Props<Astal.Window, Astal.Window.ConstructorProps> & {
+  name: string;
+  shade?: boolean | Accessor<boolean>;
+  position?: LayoutType | Accessor<LayoutType>;
+};
+
+type PopupBinProps = Props<Gtk.Box, Gtk.Box.ConstructorProps> &
+  Partial<{
+    p: Size;
+    r: Size | '3xl' | '4xl';
+  }>;
+
+type SliderProps = Props<Astal.Slider, Astal.Slider.ConstructorProps> &
+  Partial<{
+    slider: boolean;
+    size: 'sm' | 'md' | 'lg';
+    squared: boolean;
+    color: 'regular' | 'primary';
+  }>;
+
+type SeparatorProps = Props<Gtk.Separator, Gtk.Separator.ConstructorProps> &
+  Partial<{
+    vertical: boolean;
+    m: Size;
+    my: Size;
+    mx: Size;
+    mt: Size;
+    mb: Size;
+    ml: Size;
+    mr: Size;
+  }>;
+
+type FlatButtonProps = Props<Gtk.Button, Gtk.Button.ConstructorProps> & Partial<{ color: 'primary' | 'error' | 'success' | Accessor<'primary' | 'error' | 'success'> }>;

@@ -1,3 +1,4 @@
+import Pango from 'gi://Pango?version=1.0';
 import AstalMpris from 'gi://AstalMpris?version=0.1';
 import PanelButton from './panel-button';
 import { Gtk } from 'ags/gtk4';
@@ -41,8 +42,7 @@ const Player = (player: AstalMpris.Player, reveal: Accessor<boolean>) => {
       <box visible={direction()(d => d == 'left')}>
         <Revealer>
           <Box mx="md" css="margin-left: 0;">
-            {/*  truncate */}
-            <label label={label} maxWidthChars={maxChars()} />
+            <label label={label} ellipsize={Pango.EllipsizeMode.END} singleLineMode maxWidthChars={maxChars()} />
           </Box>
         </Revealer>
         <Icon symbolic={monochrome()} iconName={createBinding(player, 'entry')} fallback="audio-x-generic" />
@@ -51,8 +51,7 @@ const Player = (player: AstalMpris.Player, reveal: Accessor<boolean>) => {
         <Icon symbolic={monochrome()} iconName={createBinding(player, 'entry')} fallback="audio-x-generic" />
         <Revealer>
           <Box mx="md" css="margin-right: 0;">
-            {/* truncate */}
-            <label label={label} maxWidthChars={maxChars()} />
+            <label label={label} ellipsize={Pango.EllipsizeMode.END} singleLineMode maxWidthChars={maxChars()} />
           </Box>
         </Revealer>
       </box>
