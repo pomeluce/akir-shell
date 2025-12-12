@@ -1,48 +1,40 @@
 import GLib from 'gi://GLib?version=2.0';
 import Gio from 'gi://Gio?version=2.0';
-import { Accessor, Setter, createState } from 'gnim';
+import { Accessor, Setter } from 'gnim';
 import { monitorFile, readFile, writeFile } from 'ags/file';
 import { mkdir } from './os';
 
-export class Opt<T = unknown> {
-  initial: T;
+export class AccessorOption<T = unknown> extends Accessor<T> {
   id = '';
 
-  private accessor: Accessor<T>;
-  private setter: Setter<T>;
+  initial: T;
+  set: Setter<T>;
 
   constructor(initial: T) {
-    this.initial = initial;
-    const [a, s] = createState(initial) as [Accessor<T>, Setter<T>];
-    this.accessor = a;
-    this.setter = s;
-    return this;
-  }
+    let currentValue = initial;
+    super(get, subscribe);
 
-  toString = () => `${this.get()}`;
-  toJSON = () => this.get();
-
-  get value() {
-    return this.accessor;
-  }
-
-  get() {
-    return this.accessor.get();
-  }
-
-  /**
-   * DO NOT call this explicitly
-   * use the cli or the set fn on the object returned by {@link mkOptions}
-   */
-  set(value: T | ((prev: T) => T)) {
-    if (JSON.stringify(this.get()) !== JSON.stringify(value)) {
-      value instanceof Function ? this.setter(value) : this.setter(value);
+    function get() {
+      return currentValue;
     }
+    const subscribers = new Set<() => void>();
+    function subscribe(callback: () => void): () => void {
+      subscribers.add(callback);
+      return () => subscribers.delete(callback);
+    }
+    function set(newValue: unknown): void {
+      const value: T = typeof newValue === 'function' ? newValue(currentValue) : newValue;
+      if (!Object.is(currentValue, value)) {
+        currentValue = value;
+        Array.from(subscribers).forEach(cb => cb());
+      }
+    }
+    this.initial = initial;
+    this.set = set;
   }
 
-  subscribe(cb: () => void) {
-    return this.accessor.subscribe(cb);
-  }
+  toString = () => `${this.peek()}`;
+  toJSON = () => this.peek();
 
   init(cacheFile: string) {
     const cacheV = parse(cacheFile)[this.id];
@@ -50,46 +42,12 @@ export class Opt<T = unknown> {
   }
 
   reset() {
-    if (JSON.stringify(this.get()) !== JSON.stringify(this.initial)) {
+    if (JSON.stringify(this.peek()) !== JSON.stringify(this.initial)) {
       this.set(this.initial);
       return this.id;
     }
     return undefined;
   }
-}
-
-export function opt<T = unknown>(initial: T): Opt<T> & (() => Accessor<T>) {
-  const option = new Opt<T>(initial);
-  const fn = () => option.value;
-  return new Proxy(fn, {
-    get(_target, prop, _receiver) {
-      const v = (option as any)[prop];
-      return typeof v === 'function' ? v.bind(option) : v;
-    },
-    set(_target, prop, value) {
-      (option as any)[prop] = value;
-      return true;
-    },
-    apply(_target, _thisArg, _args) {
-      return fn.apply(option);
-    },
-    getPrototypeOf() {
-      return Object.getPrototypeOf(option);
-    },
-  }) as Opt<T> & (() => Accessor<T>);
-}
-
-function getOptions(object: Record<string, any>, path = ''): Opt<any>[] {
-  return Object.keys(object).flatMap(key => {
-    const obj = object[key];
-    const id = path ? path + '.' + key : key;
-    if (obj instanceof Opt) {
-      obj.id = id;
-      return obj;
-    }
-    if (typeof obj === 'object' && obj !== null) return getOptions(obj, id);
-    return [];
-  });
 }
 
 function parse(cacheFile: string): any {
@@ -99,6 +57,23 @@ function parse(cacheFile: string): any {
     printerr(error, cacheFile);
     return {};
   }
+}
+
+export function opt<T = unknown>(initial: T) {
+  return new AccessorOption<T>(initial);
+}
+
+function getOptions(object: Record<string, any>, path = ''): AccessorOption<any>[] {
+  return Object.keys(object).flatMap(key => {
+    const obj = object[key];
+    const id = path ? path + '.' + key : key;
+    if (obj instanceof AccessorOption) {
+      obj.id = id;
+      return obj;
+    }
+    if (typeof obj === 'object' && obj !== null) return getOptions(obj, id);
+    return [];
+  });
 }
 
 export function mkOptions<T extends object>(name: string, object: T) {
@@ -111,7 +86,7 @@ export function mkOptions<T extends object>(name: string, object: T) {
     writeFile(
       cacheFile,
       JSON.stringify(
-        options.reduce((acc, opt) => ({ ...acc, [opt.id]: opt.get() }), {}),
+        options.reduce((acc, opt) => ({ ...acc, [opt.id]: opt.peek() }), {}),
         null,
         2,
       ),

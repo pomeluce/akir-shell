@@ -1,7 +1,7 @@
 import { SeparatorProps } from '@/types/element';
 import { Gtk } from 'ags/gtk4';
 import { cnames } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 void scss`separator.separator {
   @include margin;

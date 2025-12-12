@@ -4,12 +4,12 @@ import { Box, Button, Icon, Separator, Slider } from '@/components';
 import { QSMenu, QSToggleArrow } from './button';
 import { createBinding, For } from 'gnim';
 import { dependencies, sh } from '@/support/os';
-import options from 'options';
+import { configs } from 'options';
 import app from 'ags/gtk4/app';
 
 type Type = 'speaker' | 'microphone';
 
-const { quicksettings } = options;
+const { quicksettings } = configs;
 
 const audio = AstalWp.get_default()!.audio;
 
@@ -124,7 +124,7 @@ const AudioSettings = () => (
   <button
     onClicked={() => {
       if (dependencies('gnome-control-center')) {
-        sh(quicksettings.volume.get());
+        sh(quicksettings.volume.peek());
         app.get_window('quicksettings')?.hide();
       }
     }}

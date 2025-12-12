@@ -6,7 +6,7 @@ import { bash, dependencies, mkdir } from '@/support/os';
 import { createState } from 'gnim';
 import variables from './variables';
 import integrations from './integrations';
-import options from 'options';
+import { configs, themes } from 'options';
 
 const [stylesheets, setStylesheets] = createState([] as string[]);
 
@@ -15,7 +15,7 @@ const [stylesheets, setStylesheets] = createState([] as string[]);
  */
 export function scss(sheet: TemplateStringsArray | { default: string }) {
   const style = (sheet as { default: string }).default || sheet;
-  setStylesheets([...stylesheets.get(), style as string]);
+  setStylesheets([...stylesheets.peek(), style as string]);
 }
 
 export default async () => {
@@ -29,7 +29,7 @@ export default async () => {
       const tmp = mkdir(`${TMP}/theme`);
       const scss = `${tmp}/main.scss`;
       const css = `${tmp}/main.css`;
-      const sheet = variables.get() + stylesheets.get().join('\n');
+      const sheet = variables.peek() + stylesheets.peek().join('\n');
 
       await writeFileAsync(scss, sheet);
       await bash`sass ${scss} ${css}`;
@@ -49,7 +49,8 @@ export default async () => {
     if (i.init) await i.init(props);
   }
 
-  options.subscribe(reset);
+  themes.subscribe(reset);
+  configs.subscribe(reset);
   variables.subscribe(reset);
   stylesheets.subscribe(reset);
   return new Promise((res, rej) => {

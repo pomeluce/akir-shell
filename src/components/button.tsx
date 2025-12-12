@@ -1,14 +1,24 @@
 import { ButtonProps } from '@/types/element';
 import { Accessor, createComputed } from 'gnim';
 import { cnames, fake } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 export default (props: ButtonProps) => {
   const { children, flat = false, p, px, py, r = 'lg', vfill = false, hfill = false, suggested = false, class: cname = '', color = 'regular', ...prop } = props;
 
-  const classes = createComputed([fake(color), fake(suggested), fake(cname), fake(flat)], (color, suggested, name, flat) =>
-    cnames('button', name, color, suggested && 'suggested', p && `p-${p}`, px && `px-${px}`, py && `py-${py}`, r && `r-${r}`, flat && 'flat'),
-  );
+  const classes = createComputed(() => {
+    return cnames(
+      'button',
+      fake(cname)(),
+      fake(color)(),
+      fake(suggested)() && 'suggested',
+      p && `p-${p}`,
+      px && `px-${px}`,
+      py && `py-${py}`,
+      r && `r-${r}`,
+      fake(flat)() && 'flat',
+    );
+  });
 
   return (
     <button class={classes} {...prop}>

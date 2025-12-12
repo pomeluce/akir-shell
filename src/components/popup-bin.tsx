@@ -1,6 +1,6 @@
 import { PopupBinProps } from '@/types/element';
 import { cnames, fake } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 export default function PopupBin({ p, r, class: cname = '', ...props }: PopupBinProps) {
   const classes = fake(cname).as(c => cnames('popup-bin', c, p && `p-${p}`, r && `r-${r}`));

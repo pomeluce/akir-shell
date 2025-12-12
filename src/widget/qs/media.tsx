@@ -1,12 +1,12 @@
 import Mpris from 'gi://AstalMpris?version=0.1';
 import Pango from 'gi://Pango?version=1.0';
+import { Gtk } from 'ags/gtk4';
 import { Box, Button, Icon, Slider } from '@/components';
 import { Accessor, createBinding, createComputed, For } from 'gnim';
-import { scss } from '@/theme/theme';
-import options from 'options';
+import { scss } from '@/theme/style';
 import { fake, lengthStr } from '@/support/utils';
 import { throttle } from '@/support/function';
-import { Gtk } from 'ags/gtk4';
+import { configs } from 'options';
 
 void scss`.media-player {
   .cover-art {
@@ -32,19 +32,20 @@ type MediaProps = {
   monochromeIcon?: Accessor<boolean> | boolean;
 };
 
-const { quicksettings } = options;
+const { quicksettings } = configs;
 
 const MediaPlayer = ({ player, maxChars = 30, coverSize = 6 }: MediaProps) => {
   const { icon } = quicksettings.media;
 
-  const coverArt = createComputed(
-    [fake(coverSize), createBinding(player, 'coverArt')],
-    (s, url) => `
-      min-width: ${s}rem;
-      min-height: ${s}rem;
-      background-image: url('file://${url}');
-    `,
-  );
+  const coverArt = createComputed(() => {
+    const s = fake(coverSize);
+    const url = createBinding(player, 'coverArt');
+    return `
+      min-width: ${s()}rem;
+      min-height: ${s()}rem;
+      background-image: url('file://${url()}');
+    `;
+  });
 
   const cover = (
     <Box hexpand={false} r="lg" valign={CENTER} class="cover-art" css={coverArt}>

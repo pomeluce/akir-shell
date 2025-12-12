@@ -1,6 +1,6 @@
 import { Box, Button, PopupBin, PopupWindow } from '@/components';
 import { Accessor, createRoot } from 'gnim';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 import app from 'ags/gtk4/app';
 
 void scss`akirds-popup#verification {

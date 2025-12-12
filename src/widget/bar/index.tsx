@@ -13,9 +13,9 @@ import Messages from './messages';
 import { Astal, Gdk } from 'ags/gtk4';
 import { createComputed, createRoot, For } from 'gnim';
 import { cnames } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 import app from 'ags/gtk4/app';
-import options from 'options';
+import { configs } from 'options';
 
 void scss`.bar .panel {
   &.bold label { font-weight: bold; }
@@ -65,9 +65,9 @@ export default (monitor: Gdk.Monitor) =>
       bold,
       anchor,
       layout: { start, center, end },
-    } = options.bar;
+    } = configs.bar;
 
-    const classes = createComputed([transparent(), bold()], (t, b) => cnames('panel', { transparent: t, bold: b }));
+    const classes = createComputed(() => cnames('panel', { transparent: transparent(), bold: bold() }));
 
     return (
       <window
@@ -77,18 +77,18 @@ export default (monitor: Gdk.Monitor) =>
         namespace="akirds-bar"
         gdkmonitor={monitor}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
-        anchor={anchor()(v => (v === 'top' ? top : bottom))}
+        anchor={anchor(v => (v === 'top' ? top : bottom))}
         application={app}
       >
         <centerbox class={classes}>
           <box $type="start" hexpand>
-            <For each={start()}>{w => widget[w]()}</For>
+            <For each={start}>{w => widget[w]()}</For>
           </box>
           <box $type="center" halign={CENTER}>
-            <For each={center()}>{w => widget[w]()}</For>
+            <For each={center}>{w => widget[w]()}</For>
           </box>
           <box $type="end">
-            <For each={end()}>{w => widget[w]()}</For>
+            <For each={end}>{w => widget[w]()}</For>
           </box>
         </centerbox>
       </window>

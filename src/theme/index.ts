@@ -1,13 +1,13 @@
 import { Gtk } from 'ags/gtk4';
-import theme, { scss } from './theme';
-import options from 'options';
+import { themes } from 'options';
+import theme, { scss } from './style';
 
 // used in main
 export default () => {
   const settings = Gtk.Settings.get_default()!;
-  settings.gtkFontName = options.theme.font.get();
-  const font = options.theme.font;
-  font.subscribe(() => (settings.gtkFontName = font.get()));
+  settings.gtkFontName = themes.font.peek();
+  const font = themes.font;
+  font.subscribe(() => (settings.gtkFontName = font.peek()));
 
   return theme();
 };

@@ -5,14 +5,14 @@ import GObject from 'gnim/gobject';
 import { Gdk, Gtk } from 'ags/gtk4';
 import { Icon } from '@/components';
 import { createBinding, createComputed, For, With } from 'gnim';
-import options from 'options';
+import { configs } from 'options';
 
-const { bar } = options;
+const { bar } = configs;
 
 const Item = (item: Tray.TrayItem) => {
   return (
     <box>
-      <With value={createComputed([createBinding(item, 'actionGroup'), createBinding(item, 'menuModel')])}>
+      <With value={createComputed(() => [createBinding(item, 'actionGroup')(), createBinding(item, 'menuModel')()])}>
         {([actionGroup, menuModel]: [Gio.ActionGroup, Gio.MenuModel]) => {
           const popover = Gtk.PopoverMenu.new_from_model(menuModel);
           popover.insert_action_group('dbusmenu', actionGroup);
@@ -56,7 +56,11 @@ const Item = (item: Tray.TrayItem) => {
 };
 
 export default () => {
-  const items = createComputed([createBinding(Tray.get_default(), 'items'), bar.systray.ignore()], (items, ignore) => items.filter(i => !ignore.includes(i.id)));
+  const items = createComputed(() => {
+    const ignore = bar.systray.ignore;
+    const items = createBinding(Tray.get_default(), 'items');
+    return items().filter(i => !ignore().includes(i.id));
+  });
 
   return (
     <box>

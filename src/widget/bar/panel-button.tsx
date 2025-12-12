@@ -1,6 +1,6 @@
 import { Box, Button } from '@/components';
-import { fake } from '@/support/utils';
 import { ButtonProps } from '@/types/element';
+import { fake } from '@/support/utils';
 import app from 'ags/gtk4/app';
 
 export default (props: ButtonProps & { winName?: string }) => {

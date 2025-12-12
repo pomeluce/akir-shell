@@ -1,10 +1,10 @@
 import { FlatButtonProps } from '@/types/element';
 import { cnames, fake } from '@/support/utils';
 import { createComputed } from 'gnim';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 export default ({ color = 'primary', class: cname = '', ...props }: FlatButtonProps) => {
-  const classes = createComputed([fake(color), fake(cname)], (c, n) => cnames('flat-button', c, n));
+  const classes = createComputed(() => cnames('flat-button', fake(color)(), fake(cname)()));
   return <button class={classes} {...props} />;
 };
 

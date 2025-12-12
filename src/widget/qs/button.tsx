@@ -14,16 +14,16 @@ interface QSSimpleToggleButtonProps {
 }
 
 export const QSSimpleToggleButton = ({ icon, label, state = false, onToggled }: QSSimpleToggleButtonProps) => {
-  const [innerState, setInnerState] = createState(state instanceof Accessor ? state.get() : state);
+  const [innerState, setInnerState] = createState(state instanceof Accessor ? state.peek() : state);
 
   return (
     <Box
       class="qs-simple-toggle-button raised"
       r="2xl"
       $={self => {
-        self[innerState.get() ? 'add_css_class' : 'remove_css_class']('active');
-        innerState(() => self[innerState.get() ? 'add_css_class' : 'remove_css_class']('active'));
-        if (state instanceof Accessor) state.subscribe(() => setInnerState(state.get()));
+        self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active');
+        innerState(() => self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active'));
+        if (state instanceof Accessor) state.subscribe(() => setInnerState(state.peek()));
       }}
     >
       <button hexpand onClicked={onToggled}>
@@ -41,7 +41,7 @@ export const QSToggleArrow = ({ name, activate }: { name: string; activate?: () 
   return (
     <button
       onClicked={() => {
-        setOpened(opened.get() === name ? '' : name);
+        setOpened(opened.peek() === name ? '' : name);
         activate?.();
       }}
     >
@@ -54,8 +54,8 @@ export const QSToggleArrow = ({ name, activate }: { name: string; activate?: () 
             let deg = 0;
             let btnOpened = false;
             opened.subscribe(() => {
-              if ((opened.get() === name && !btnOpened) || (opened.get() !== name && btnOpened)) {
-                const step = opened.get() === name ? 10 : -10;
+              if ((opened.peek() === name && !btnOpened) || (opened.peek() !== name && btnOpened)) {
+                const step = opened.peek() === name ? 10 : -10;
                 btnOpened = !btnOpened;
                 for (let i = 0; i < 9; ++i) {
                   timeout(15 * i, () => {
@@ -82,24 +82,24 @@ interface QSToggleButtonProps {
 }
 
 export const QSToggleButton = ({ label, icon, state = false, name = '', activate, deactivate }: QSToggleButtonProps) => {
-  const [innerState, setInnerState] = createState(state instanceof Accessor ? state.get() : state);
+  const [innerState, setInnerState] = createState(state instanceof Accessor ? state.peek() : state);
 
   return (
     <Box
       class="qs-toggle-button raised"
       r="2xl"
       $={self => {
-        self[innerState.get() ? 'add_css_class' : 'remove_css_class']('active');
-        innerState(() => self[innerState.get() ? 'add_css_class' : 'remove_css_class']('active'));
-        if (state instanceof Accessor) state.subscribe(() => setInnerState(state.get()));
+        self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active');
+        innerState(() => self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active'));
+        if (state instanceof Accessor) state.subscribe(() => setInnerState(state.peek()));
       }}
     >
       <button
         hexpand
         onClicked={() => {
-          if (innerState.get()) {
+          if (innerState.peek()) {
             deactivate();
-            if (opened.get() === name) setOpened('');
+            if (opened.peek() === name) setOpened('');
           } else activate();
         }}
       >

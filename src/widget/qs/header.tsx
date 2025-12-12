@@ -3,9 +3,9 @@ import { Box, Button, Icon } from '@/components';
 import { lengthStr } from '@/support/utils';
 import { createBinding, createComputed } from 'gnim';
 import { createPoll } from 'ags/time';
-import options from 'options';
+import { configs } from 'options';
 
-const { image, size } = options.quicksettings.avatar;
+const { image, size } = configs.quicksettings.avatar;
 
 const battery = Battery.get_default();
 
@@ -25,7 +25,7 @@ export default () => {
       <box
         canFocus
         class="avatar"
-        css={createComputed([image(), size()], (img, s) => `min-width: ${s}px; min-height: ${s}px; background-image: url('file://${img}'); background-size: cover;`)}
+        css={createComputed(() => `min-width: ${size()}px; min-height: ${size()}px; background-image: url('file://${image()}'); background-size: cover;`)}
       />
       <Box vertical valign={CENTER} gap="md">
         <Box gap="md" valign={CENTER} visible={createBinding(battery, 'isPresent')}>

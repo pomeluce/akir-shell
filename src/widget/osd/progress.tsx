@@ -1,6 +1,6 @@
 import { Accessor, createState } from 'gnim';
 import { Icon } from '@/components';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 type ProgressProps = {
   height?: number;
@@ -14,12 +14,12 @@ export default ({ height = 18, width = 180, vertical = false, value, icon }: Pro
   const [style, setStyle] = createState(``);
 
   const unsub = value.subscribe(() => {
-    if (value.get() < 0) return;
+    if (value.peek() < 0) return;
 
     const axis = vertical ? 'height' : 'width';
     const axisv = vertical ? height : width;
     const min = vertical ? width : height;
-    const preferred = (axisv - min) * value.get() + min;
+    const preferred = (axisv - min) * value.peek() + min;
     setStyle(`min-${axis}: ${preferred}px;`);
   });
 

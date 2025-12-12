@@ -2,7 +2,7 @@ import { Gtk } from 'ags/gtk4';
 import { Accessor } from 'gnim';
 import { BoxProps } from '@/types/element';
 import { cnames, fake } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 export default (props: BoxProps) => {
   const { gap, p, px, py, pt, pb, pl, pr, m, mx, my, mt, mb, ml, mr, r, class: cname = '', vertical = false, widget = false, ...prop } = props;

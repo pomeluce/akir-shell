@@ -3,11 +3,11 @@ import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import { LayoutType, PopupWindowProps } from '@/types/element';
 import { Accessor, Node, createComputed } from 'gnim';
 import { cnames, fake } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 import app from 'ags/gtk4/app';
 
 function Layout({ children: child, position, onClick }: { position: LayoutType | Accessor<LayoutType>; onClick: () => void; children: Node | Node[] }) {
-  position instanceof Accessor && (position = position.get());
+  position instanceof Accessor && (position = position.peek());
   const children = Array.isArray(child) ? child[0] : child;
 
   switch (position) {
@@ -125,7 +125,7 @@ export default (props: PopupWindowProps) => {
   } = props;
 
   const hide = () => app.get_window(name)?.hide();
-  const classes = createComputed([fake(cname), fake(shade)], (cn, shade) => cnames('popup-window', cn, { shade }));
+  const classes = createComputed(() => cnames('popup-window', fake(cname)(), { shade: fake(shade)() }));
   const { TOP, RIGHT, BOTTOM, LEFT } = Astal.WindowAnchor;
 
   return (

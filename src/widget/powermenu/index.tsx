@@ -1,7 +1,7 @@
-import { Box, PopupBin, PopupWindow } from '@/components';
 import PowerButton from './button';
-import options from 'options';
+import { Box, PopupBin, PopupWindow } from '@/components';
 import { createRoot, With } from 'gnim';
+import { configs } from 'options';
 
 type Props = {
   onClick: (btn: PowerMenuType) => void;
@@ -50,7 +50,7 @@ export default ({ onClick }: Props) =>
       <PopupWindow shade name="powermenu">
         <PopupBin valign={CENTER} vexpand={false} r="4xl" p="2xl">
           <Box m="2xl" p="lg">
-            <With value={options.powermenu.layout()}>{l => (l === '1x6' ? <LineLayout onClick={onClick} /> : <BoxLayout onClick={onClick} />)}</With>
+            <With value={configs.powermenu.layout}>{l => (l === '1x6' ? <LineLayout onClick={onClick} /> : <BoxLayout onClick={onClick} />)}</With>
           </Box>
         </PopupBin>
       </PopupWindow>

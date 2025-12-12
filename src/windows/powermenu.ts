@@ -3,7 +3,7 @@ import Verification from '@/widget/powermenu/verification';
 import { Gtk } from 'ags/gtk4';
 import { exec } from 'ags/process';
 import { createState } from 'gnim';
-import options from 'options';
+import { configs } from 'options';
 
 export default function powermenu() {
   const [label, setLabel] = createState('');
@@ -26,7 +26,7 @@ export default function powermenu() {
   }
 
   function onAccept() {
-    exec(options.powermenu[selected.get()].get());
+    exec(configs.powermenu[selected.peek()].peek());
     verification.hide();
   }
 

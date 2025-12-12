@@ -6,32 +6,33 @@ import { Box, Icon } from '@/components';
 import { Accessor, createBinding, createComputed, createState, With } from 'gnim';
 import { timeout } from 'ags/time';
 import { throttle } from '@/support/function';
-import options from 'options';
+import { configs } from 'options';
 
-const { flat, preferred, monochrome, direction, format, maxChars, timeout: tout } = options.bar.media;
+const { flat, preferred, monochrome, direction, format, maxChars, timeout: tout } = configs.bar.media;
 
 const Player = (player: AstalMpris.Player, reveal: Accessor<boolean>) => {
   let cancel = false;
-  const label = createComputed([format(), createBinding(player, 'metadata')], f =>
-    f.replace('{title}', player.title).replace('{artist}', player.artist).replace('{album}', player.album).replace('{identity}', player.identity),
-  );
+  const label = createComputed(() => {
+    createBinding(player, 'metadata');
+    return format().replace('{title}', player.title).replace('{artist}', player.artist).replace('{album}', player.album).replace('{identity}', player.identity);
+  });
 
   const Revealer = ({ children }: { children?: JSX.Element }) => (
     <revealer
       $={self =>
         player.connect('notify::title', () => {
-          const time = tout.get();
+          const time = tout.peek();
 
           if (time > 0) {
             self.revealChild = true;
             timeout(time, () => {
-              if (!reveal.get() && !cancel) self.revealChild = false;
+              if (!reveal.peek() && !cancel) self.revealChild = false;
             });
           }
         })
       }
       revealChild={reveal}
-      transitionType={direction()(d => (d === 'left' ? SLIDE_LEFT : SLIDE_RIGHT))}
+      transitionType={direction(d => (d === 'left' ? SLIDE_LEFT : SLIDE_RIGHT))}
     >
       {children}
     </revealer>
@@ -39,7 +40,7 @@ const Player = (player: AstalMpris.Player, reveal: Accessor<boolean>) => {
 
   return (
     <box>
-      <box visible={direction()(d => d == 'left')}>
+      <box visible={direction(d => d == 'left')}>
         <Revealer>
           <Box mx="md" css="margin-left: 0;">
             <label label={label} ellipsize={Pango.EllipsizeMode.END} singleLineMode maxWidthChars={maxChars()} />
@@ -47,7 +48,7 @@ const Player = (player: AstalMpris.Player, reveal: Accessor<boolean>) => {
         </Revealer>
         <Icon symbolic={monochrome()} iconName={createBinding(player, 'entry')} fallback="audio-x-generic" />
       </box>
-      <box visible={direction()(d => d == 'right')}>
+      <box visible={direction(d => d == 'right')}>
         <Icon symbolic={monochrome()} iconName={createBinding(player, 'entry')} fallback="audio-x-generic" />
         <Revealer>
           <Box mx="md" css="margin-right: 0;">
@@ -63,14 +64,17 @@ export default () => {
   const mpris = AstalMpris.get_default();
   const [reveal, setReveal] = createState(false);
 
-  const player = createComputed([createBinding(mpris, 'players'), preferred()], (ps, pref) => ps.find(p => p.busName?.includes(pref)) || ps?.[0] || null);
+  const player = createComputed(() => {
+    const ps = createBinding(mpris, 'players');
+    return ps().find(p => p.busName?.includes(preferred())) || ps()?.[0] || null;
+  });
   const handleMotion = (motion: boolean) => throttle(100, () => setReveal(motion));
 
   return (
     <PanelButton
       visible={player(Boolean)}
       flat={flat()}
-      onClicked={() => player.get().play_pause()}
+      onClicked={() => player.peek().play_pause()}
       $={self => {
         const ctrl = new Gtk.EventControllerMotion();
         ctrl.connect('enter', handleMotion(true));

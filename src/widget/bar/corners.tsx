@@ -3,22 +3,22 @@ import { Astal, Gdk } from 'ags/gtk4';
 import { idle } from 'ags/time';
 import { createComputed, createRoot } from 'gnim';
 import { cnames } from '@/support/utils';
-import { scss } from '@/theme/theme';
-import options from 'options';
+import { scss } from '@/theme/style';
+import { configs } from 'options';
 
 export default (monitor: Gdk.Monitor) =>
   createRoot(() => {
-    const { corners, transparent, anchor } = options.bar;
+    const { corners, transparent, anchor } = configs.bar;
     const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor;
 
-    const classes = createComputed([corners(), anchor()], (c, p) => cnames('corners', c, p));
+    const classes = createComputed(() => cnames('corners', corners(), anchor()));
 
     return (
       <window
         class={classes}
         name={`corner-${monitor.connector}`}
         namespace="akirds-corners"
-        visible={transparent()(t => !t)}
+        visible={transparent(t => !t)}
         anchor={TOP | BOTTOM | LEFT | RIGHT}
         gdkmonitor={monitor}
         $={self => {

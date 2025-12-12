@@ -1,7 +1,7 @@
 import Hyprland from 'gi://AstalHyprland?version=0.1';
-import { Astal } from 'ags/gtk4';
 import type { IntegrationProps } from '.';
-import options from 'options';
+import { Astal } from 'ags/gtk4';
+import { themes } from 'options';
 
 function rgba(color: string) {
   return `rgba(${color}ff)`.replace('#', '');
@@ -22,24 +22,24 @@ function sendBatch(...batch: string[]) {
 }
 
 async function reset() {
-  if (!options.theme.hyprland.enable.get()) return;
+  if (!themes.hyprland.enable.peek()) return;
 
-  const { spacing, border, scheme, dark, light, radius, shadows } = options.theme;
-  const { inactiveBorder, gapsMultiplier } = options.theme.hyprland;
+  const { spacing, border, scheme, dark, light, radius, shadows } = themes;
+  const { inactiveBorder, gapsMultiplier } = themes.hyprland;
 
-  const wm_gaps = Math.floor(spacing.get() * gapsMultiplier.get());
-  const active = scheme.mode.get() === 'dark' ? dark.primary.get() : light.primary.get();
-  const inactive = scheme.mode.get() === 'dark' ? inactiveBorder.dark.get() : inactiveBorder.light.get();
-  const rounding = Math.floor(radius.get() * gapsMultiplier.get());
+  const wm_gaps = Math.floor(spacing.peek() * gapsMultiplier.peek());
+  const active = scheme.mode.peek() === 'dark' ? dark.primary.peek() : light.primary.peek();
+  const inactive = scheme.mode.peek() === 'dark' ? inactiveBorder.dark.peek() : inactiveBorder.light.peek();
+  const rounding = Math.floor(radius.peek() * gapsMultiplier.peek());
 
   sendBatch(
-    `general:border_size ${border.width.get() * 3}`,
+    `general:border_size ${border.width.peek() * 3}`,
     `general:gaps_out ${wm_gaps}`,
     `general:gaps_in ${Math.floor(wm_gaps / 2)}`,
     `general:col.active_border ${rgba(active)}`,
     `general:col.inactive_border ${rgba(inactive)}`,
     `decoration:rounding ${rounding}`,
-    `decoration:shadow:enabled ${shadows.get() ? 'true' : 'false'}`,
+    `decoration:shadow:enabled ${shadows.peek() ? 'true' : 'false'}`,
   );
 
   // TODO: gapsWhenOnly
@@ -55,7 +55,7 @@ async function init({ App }: IntegrationProps) {
   async function blur(name: string) {
     await sendBatch(`layerrule unset, ${name}`);
 
-    if (options.theme.blur.get() > 0) {
+    if (themes.blur.peek() > 0) {
       sendBatch(`layerrule unset, ${name}`, `layerrule blur, ${name}`, `layerrule ignorealpha ${0.29}, ${name}`);
     }
   }
@@ -64,7 +64,7 @@ async function init({ App }: IntegrationProps) {
     if (win instanceof Astal.Window) blur(win.namespace);
   });
 
-  options.theme.blur.subscribe(() => {
+  themes.blur.subscribe(() => {
     for (const win of App.get_windows()) {
       if (win instanceof Astal.Window) blur(win.namespace);
     }

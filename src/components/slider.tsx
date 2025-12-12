@@ -1,6 +1,6 @@
 import { SliderProps } from '@/types/element';
 import { cnames, fake } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 export default ({ color = 'primary', class: cname, size = 'lg', slider = false, squared = false, ...props }: SliderProps) => {
   const classes = fake(cname).as(c => cnames('slider', c, color, size, slider && 'slider', squared && 'squared'));

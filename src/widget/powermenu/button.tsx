@@ -1,7 +1,7 @@
 import { Box, Icon } from '@/components';
 import { cnames } from '@/support/utils';
-import { scss } from '@/theme/theme';
-import options from 'options';
+import { scss } from '@/theme/style';
+import { configs } from 'options';
 
 void scss`window#powermenu .power-button {
   all: unset;
@@ -65,13 +65,13 @@ type Props = {
 };
 
 export default function PowerButton({ icon, label, onClick }: Props) {
-  const { labels, iconSize } = options.powermenu;
+  const { labels, iconSize } = configs.powermenu;
 
   return (
     <Box p="2xl">
-      <button vexpand hexpand class={labels()(labels => cnames({ labels }, 'power-button'))} onClicked={onClick}>
+      <button vexpand hexpand class={labels(labels => cnames({ labels }, 'power-button'))} onClicked={onClick}>
         <Box gap="xl" vertical>
-          <Icon symbolic iconName={icon} pixelSize={iconSize().as(v => v * 10)} />
+          <Icon symbolic iconName={icon} pixelSize={iconSize.as(v => v * 10)} />
           <label
             visible={labels()}
             label={label}

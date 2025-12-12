@@ -8,7 +8,7 @@ import { Box, Icon } from '@/components';
 import { createBinding, createComputed } from 'gnim';
 import { throttle } from '@/support/function';
 import { sh } from '@/support/os';
-import options from 'options';
+import { configs } from 'options';
 
 const notifd = Notifd.get_default();
 const bluetooth = Bluetooth.get_default();
@@ -22,17 +22,21 @@ const AudioIcon = () => {
 const MicrophoneIcon = () => {
   const mic = audio.defaultMicrophone;
 
-  const visible = createComputed([createBinding(audio, 'recorders'), createBinding(mic, 'mute')], (rs, mute) => rs.length > 0 || mute);
+  const visible = createComputed(() => {
+    const recorders = createBinding(audio, 'recorders');
+    const mute = createBinding(mic, 'mute');
+    return recorders().length > 0 || mute();
+  });
 
   return <Icon symbolic visible={visible} iconName={createBinding(mic, 'volumeIcon')} />;
 };
 
 export default () => {
   const { WIFI, WIRED } = Network.Primary;
-  const { flat, action, label } = options.bar.systemIndicators;
+  const { flat, action, label } = configs.bar.systemIndicators;
 
-  const wifi = createBinding(network, 'wifi').get();
-  const wired = createBinding(network, 'wired').get();
+  const wifi = createBinding(network, 'wifi').peek();
+  const wired = createBinding(network, 'wired').peek();
 
   const scroll = throttle(100, (y: number) => {
     const s = audio.defaultSpeaker;
@@ -57,7 +61,7 @@ export default () => {
       color="primary"
       flat={flat()}
       tooltipText={label()}
-      onClicked={() => sh(action.get())}
+      onClicked={() => sh(action.peek())}
       $={self => {
         const ctrl = new Gtk.EventControllerScroll({ flags: Gtk.EventControllerScrollFlags.VERTICAL });
         ctrl.connect('scroll', (_ctrl, _dx, dy) => scroll(dy));

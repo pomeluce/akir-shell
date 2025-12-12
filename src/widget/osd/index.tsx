@@ -4,12 +4,12 @@ import Progress from './progress';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import { Accessor, createComputed, createRoot, createState, Setter, With } from 'gnim';
 import { PopupBin } from '@/components';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 import { timeout } from 'ags/time';
+import { configs } from 'options';
 import app from 'ags/gtk4/app';
-import options from 'options';
 
-const { osd } = options;
+const { osd } = configs;
 
 const icons = {
   indicator: 'display-brightness',
@@ -28,12 +28,12 @@ function OnScreenProgress({ vertical, visible, setVisible }: { vertical: boolean
 
   const [iconName, setIconName] = createState('');
   const [progValue, setProgValue] = createState(0);
-  const transitionType = createComputed([osd.slide(), osd.anchors()], (s, a) => {
-    if (!s) return CROSSFADE;
-    if (a.includes('top')) return SLIDE_DOWN;
-    if (a.includes('bottom')) return SLIDE_UP;
-    if (a.includes('left')) return SLIDE_RIGHT;
-    if (a.includes('right')) return SLIDE_LEFT;
+  const transitionType = createComputed(() => {
+    if (!osd.slide()) return CROSSFADE;
+    if (osd.anchors().includes('top')) return SLIDE_DOWN;
+    if (osd.anchors().includes('bottom')) return SLIDE_UP;
+    if (osd.anchors().includes('left')) return SLIDE_RIGHT;
+    if (osd.anchors().includes('right')) return SLIDE_LEFT;
     return CROSSFADE;
   });
 
@@ -43,7 +43,7 @@ function OnScreenProgress({ vertical, visible, setVisible }: { vertical: boolean
     setProgValue(v);
     setIconName(ico);
     count++;
-    timeout(osd.timeout.get(), () => {
+    timeout(osd.timeout.peek(), () => {
       count--;
 
       if (count === 0) setVisible(false);
@@ -60,7 +60,7 @@ function OnScreenProgress({ vertical, visible, setVisible }: { vertical: boolean
       revealChild={visible}
       transitionType={transitionType}
     >
-      <box css={osd.margin()(m => `margin: ${m}px;`)}>
+      <box css={osd.margin(m => `margin: ${m}px;`)}>
         <PopupBin>
           <Progress value={progValue} width={vertical ? 42 : 300} height={vertical ? 300 : 42} vertical={vertical} icon={iconName} />
         </PopupBin>
@@ -83,7 +83,7 @@ export default (monitor: Gdk.Monitor) =>
         application={app}
         layer={Astal.Layer.OVERLAY}
         keymode={Astal.Keymode.ON_DEMAND}
-        anchor={anchors()(anchor)}
+        anchor={anchors(anchor)}
       >
         <box
           $={self => {
@@ -92,7 +92,7 @@ export default (monitor: Gdk.Monitor) =>
             self.add_controller(ctrl);
           }}
         >
-          <With value={vertical()}>{vertical => OnScreenProgress({ vertical, visible, setVisible })}</With>
+          <With value={vertical}>{vertical => OnScreenProgress({ vertical, visible, setVisible })}</With>
         </box>
       </window>
     );

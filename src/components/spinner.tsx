@@ -1,7 +1,7 @@
 import { Accessor } from 'gnim';
 import Icon from './icon';
 import { cnames, fake } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 
 type Props = {
   icon?: string;

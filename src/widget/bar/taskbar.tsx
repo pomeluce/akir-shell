@@ -1,11 +1,11 @@
 import Hyprland from 'gi://AstalHyprland?version=0.1';
 import PanelButton from './panel-button';
 import { Icon } from '@/components';
-import options from 'options';
+import { configs } from 'options';
 import { createBinding, For } from 'gnim';
 
 function Client(client: Hyprland.Client) {
-  const { flat, monochrome } = options.bar.taskbar;
+  const { flat, monochrome } = configs.bar.taskbar;
   const hyprland = Hyprland.get_default();
 
   const focused = createBinding(hyprland, 'focusedClient').as(c => c === client);

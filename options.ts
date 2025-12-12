@@ -1,62 +1,64 @@
-import { mkOptions, opt } from '@/support/option';
 import GLib from 'gi://GLib?version=2.0';
-export default mkOptions('config', {
-  theme: {
-    dark: {
-      primary: opt('#51a4e7'),
-      error: opt('#e55f86'),
-      success: opt('#00D787'),
-      bg: opt('#171717'),
-      fg: opt('#eeeeee'),
-      widget: opt('#eeeeee'),
-      border: opt('#eeeeee'),
-    },
-    light: {
-      primary: opt('#426ede'),
-      error: opt('#b13558'),
-      success: opt('#009e49'),
-      bg: opt('#fffffa'),
-      fg: opt('#080808'),
-      widget: opt('#080808'),
-      border: opt('#080808'),
-    },
-    blur: opt(30),
-    scheme: {
-      enable: opt(true),
-      mode: opt<'dark' | 'light'>('dark'),
-      theme: {
-        light: opt('WhiteSur-Light'),
-        dark: opt('WhiteSur-Dark'),
-      },
-    },
-    widget: {
-      opacity: opt(94),
-    },
-    border: {
-      width: opt(1),
-      opacity: opt(96),
-    },
-    shadows: opt(true),
-    padding: opt(9),
-    spacing: opt(9),
-    radius: opt(9),
-    font: opt('CaskaydiaMono Nerd Font 10'),
-    hyprland: {
-      enable: opt(true),
-      inactiveBorder: {
-        dark: opt('#282828'),
-        light: opt('#181818'),
-      },
-      gapsMultiplier: opt(1.7),
-    },
-    swww: {
-      enable: opt(false),
-      fps: opt(165),
-      wp: opt(`${GLib.get_user_config_dir()}/wallpapers`),
-      interval: opt(300),
-    },
-    iconSize: opt(20),
+import { mkOptions, opt } from '@/support/option';
+
+export const themes = mkOptions('theme', {
+  dark: {
+    primary: opt('#51a4e7'),
+    error: opt('#e55f86'),
+    success: opt('#00D787'),
+    bg: opt('#171717'),
+    fg: opt('#eeeeee'),
+    widget: opt('#eeeeee'),
+    border: opt('#eeeeee'),
   },
+  light: {
+    primary: opt('#426ede'),
+    error: opt('#b13558'),
+    success: opt('#009e49'),
+    bg: opt('#fffffa'),
+    fg: opt('#080808'),
+    widget: opt('#080808'),
+    border: opt('#080808'),
+  },
+  blur: opt(30),
+  scheme: {
+    enable: opt(true),
+    mode: opt<'dark' | 'light'>('dark'),
+    theme: {
+      light: opt('WhiteSur-Light'),
+      dark: opt('WhiteSur-Dark'),
+    },
+  },
+  widget: {
+    opacity: opt(94),
+  },
+  border: {
+    width: opt(1),
+    opacity: opt(96),
+  },
+  shadows: opt(true),
+  padding: opt(9),
+  spacing: opt(9),
+  radius: opt(9),
+  font: opt('CaskaydiaMono Nerd Font 10'),
+  hyprland: {
+    enable: opt(true),
+    inactiveBorder: {
+      dark: opt('#282828'),
+      light: opt('#181818'),
+    },
+    gapsMultiplier: opt(1.7),
+  },
+  swww: {
+    enable: opt(false),
+    fps: opt(165),
+    wp: opt(`${GLib.get_user_config_dir()}/wallpapers`),
+    interval: opt(300),
+  },
+  iconSize: opt(20),
+});
+
+export const configs = mkOptions('config', {
   bar: {
     bold: opt(true),
     anchor: opt<'top' | 'bottom'>('top'),
@@ -72,7 +74,7 @@ export default mkOptions('config', {
       flat: opt(true),
       icon: opt(GLib.get_os_info('LOGO') || 'system-search-symbolic'),
       label: opt('Applications'),
-      action: opt('akir-shell -t launcher'),
+      action: opt('ags request toggle launcher -i akirds'),
     },
     date: {
       flat: opt(true),
@@ -126,7 +128,7 @@ export default mkOptions('config', {
     },
     systemIndicators: {
       flat: opt(true),
-      action: opt(`ags request toggle quicksettings -i akirds`),
+      action: opt('ags request toggle quicksettings -i akirds'),
       label: opt('System Indicators'),
     },
   },
@@ -140,9 +142,10 @@ export default mkOptions('config', {
       maxItems: opt(7),
       placeholder: opt('Search applications...'),
       icon: {
-        size: opt(4),
+        size: opt(8),
         monochrome: opt(false),
       },
+      sort: opt<'frequency' | 'alphabetical'>('frequency'),
     },
     clipboard: {
       maxItems: opt(10),

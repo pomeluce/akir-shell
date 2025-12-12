@@ -19,6 +19,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       entry = "app.ts";
+      version = builtins.readFile ./version;
 
       nativeBuildInputs = with pkgs; [
         wrapGAppsHook3
@@ -85,7 +86,7 @@
             mkdir -p $out/bin
             mkdir -p $out/share
             cp -r * $out/share
-            ags bundle ${entry} $out/bin/${name} -d "SRC='$out/share'"
+            ags bundle ${entry} $out/bin/${name} -d "SRC='$out/share'" -d "VERSION='${version}'" -d "DEV=true"
 
             runHook postInstall
           '';

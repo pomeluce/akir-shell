@@ -1,10 +1,10 @@
-import options from 'options';
+import Box from '@/components/box';
 import { QSMenu, QSToggleButton } from './button';
 import { createComputed, For } from 'gnim';
-import Box from '@/components/box';
 import { cnames } from '@/support/utils';
+import { configs, themes } from 'options';
 
-const { quicksettings, theme } = options;
+const { quicksettings } = configs;
 
 export const ThemeColor = () => {
   return <QSToggleButton name="themeColor" icon="preferences-color" state={true} label="Theme" activate={() => {}} deactivate={() => {}} />;
@@ -12,21 +12,21 @@ export const ThemeColor = () => {
 
 export const ThemeColorSelection = () => {
   function set({ dark, light }: { dark: string; light: string }) {
-    options.set('theme.dark.primary', dark);
-    options.set('theme.light.primary', light);
+    themes.set('dark.primary', dark);
+    themes.set('light.primary', light);
   }
 
-  const current = createComputed([theme.dark.primary(), theme.light.primary()], (dark, light) => ({ dark, light }));
+  const current = createComputed(() => ({ dark: themes.dark.primary(), light: themes.light.primary() }));
 
-  const chunkSize = quicksettings.chunkSize.get();
-  const colors = quicksettings.colors().as(as =>
+  const chunkSize = quicksettings.chunkSize.peek();
+  const colors = quicksettings.colors.as(as =>
     as
       .map(accent => (
         <button
           hexpand
           class={current(current => cnames('theme-color', current.dark === accent.dark && current.light === accent.light && 'active'))}
-          tooltipText={theme.scheme.mode()(s => accent[s])}
-          css={theme.scheme.mode()(s => `color: ${accent[s]};`)}
+          tooltipText={themes.scheme.mode(s => accent[s])}
+          css={themes.scheme.mode(s => `color: ${accent[s]};`)}
           onClicked={() => set(accent)}
         >
           <Box p="xl">

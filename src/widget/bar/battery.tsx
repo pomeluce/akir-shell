@@ -1,13 +1,13 @@
 import Battery from 'gi://AstalBattery?version=0.1';
+import PanelButton from './panel-button';
 import { Gtk } from 'ags/gtk4';
 import { Icon } from '@/components';
 import { cnames } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
 import { createBinding, createComputed } from 'gnim';
-import options from 'options';
-import PanelButton from './panel-button';
+import { configs } from 'options';
 
-const { flat, suggested, bar, percentage, low, size } = options.bar.battery;
+const { flat, suggested, bar, percentage, low, size } = configs.bar.battery;
 
 function blocks(s: 'sm' | 'md' | 'lg') {
   if (s === 'sm') return 6;
@@ -16,35 +16,30 @@ function blocks(s: 'sm' | 'md' | 'lg') {
   return 4;
 }
 
+const percent = createBinding(Battery.get_default(), 'percentage');
+
 const PercentageLabel = () => (
   <box>
     <revealer canTarget={false} revealChild={percentage()} transitionType={SLIDE_RIGHT}>
-      <label label={createBinding(Battery.get_default(), 'percentage').as(p => `${Math.floor(p * 100)}%`)} />
+      <label label={percent.as(p => `${Math.floor(p * 100)}%`)} />
     </revealer>
   </box>
 );
 
-const PercentageIcon = () => (
-  <Icon symbolic iconName={createBinding(Battery.get_default(), 'percentage').as(p => (p > 0.98 ? 'battery-full-charged' : Battery.get_default().batteryIconName))} />
-);
+const PercentageIcon = () => <Icon symbolic iconName={percent.as(p => (p > 0.98 ? 'battery-full-charged' : Battery.get_default().batteryIconName))} />;
 
 const LevelBar = ({ vfill }: { vfill?: boolean }) => (
-  <levelbar
-    valign={vfill ? FILL : CENTER}
-    mode={Gtk.LevelBarMode.DISCRETE}
-    minValue={0}
-    maxValue={size()(blocks)}
-    value={createComputed([createBinding(Battery.get_default(), 'percentage'), size()], (p, s) => p * blocks(s))}
-  />
+  <levelbar valign={vfill ? FILL : CENTER} mode={Gtk.LevelBarMode.DISCRETE} minValue={0} maxValue={size(blocks)} value={createComputed(() => percent() * blocks(size()))} />
 );
 
 export default () => {
   const battery = Battery.get_default();
-  const style = createComputed([createBinding(battery, 'charging'), createBinding(battery, 'percentage'), low()], (ch, p, low) =>
-    ch ? 'success' : p * 100 <= low ? 'error' : 'regular',
-  );
+  const style = createComputed(() => {
+    const ch = createBinding(battery, 'charging');
+    return ch() ? 'success' : percent() * 100 <= low() ? 'error' : 'regular';
+  });
 
-  const classes = createComputed([size()], s => cnames('battery', s));
+  const classes = createComputed(() => cnames('battery', size()));
 
   return (
     <PanelButton
@@ -53,15 +48,15 @@ export default () => {
       suggested={suggested()}
       color={style}
       visible={createBinding(battery, 'isPresent')}
-      tooltipText={createBinding(battery, 'percentage').as(p => `${Math.round(p * 100)}%`)}
-      onClicked={() => percentage.set(!percentage.get())}
+      tooltipText={percent.as(p => `${Math.round(p * 100)}%`)}
+      onClicked={() => percentage.set(!percentage.peek())}
     >
       <box>
-        <box visible={bar()(s => s === 'regular')}>
+        <box visible={bar(s => s === 'regular')}>
           <PercentageLabel />
           <LevelBar />
         </box>
-        <box visible={bar()(s => s === 'hidden')}>
+        <box visible={bar(s => s === 'hidden')}>
           <PercentageIcon />
           <PercentageLabel />
         </box>

@@ -5,15 +5,15 @@ import { QSMenu, QSToggleButton } from './button';
 import { createBinding, createComputed, For } from 'gnim';
 import { dependencies, sh } from '@/support/os';
 import { execAsync } from 'ags/process';
-import options from 'options';
+import { configs } from 'options';
 
 // @ts-ignore
 const noPw = NM['80211ApSecurityFlags'].NONE;
 
 const nw = NW.get_default();
-const wifi = createBinding(nw, 'wifi').get();
+const wifi = createBinding(nw, 'wifi').peek();
 
-const { quicksettings } = options;
+const { quicksettings } = configs;
 
 export function Network() {
   return (
@@ -25,7 +25,7 @@ export function Network() {
         v
           ? createBinding(wifi, 'ssid')
               .as(ssid => ssid || 'Not Connected')
-              .get()
+              .peek()
           : 'Wi-Fi',
       )}
       activate={() => {
@@ -38,7 +38,13 @@ export function Network() {
 }
 
 export function WifiSelection() {
-  const aps = createComputed([createBinding(nw.wifi, 'accessPoints'), createBinding(nw.wifi, 'strength')], aps => aps.sort((a, b) => b.strength - a.strength).slice(0, 10));
+  const aps = createComputed(() => {
+    createBinding(nw.wifi, 'strength');
+    const aps = createBinding(nw.wifi, 'accessPoints');
+    return aps()
+      .sort((a, b) => b.strength - a.strength)
+      .slice(0, 10);
+  });
 
   return (
     <QSMenu name="network" icon={createBinding(wifi, 'iconName')} title="Wifi Selection">
@@ -57,7 +63,7 @@ export function WifiSelection() {
             const bitrate = createBinding(ap, 'maxBitrate').as(br => `${br / 1000} Mbit/s`);
             const hasPW = createBinding(ap, 'wpaFlags').as(flags => flags !== noPw);
 
-            const lock = createComputed([hasPW, selected], (pw, s) => pw && !s);
+            const lock = createComputed(() => hasPW() && !selected());
 
             return (
               <FlatButton
@@ -79,7 +85,7 @@ export function WifiSelection() {
         </For>
       </Box>
       <Separator my="md" />
-      <button onClicked={() => sh(quicksettings.network.get())}>
+      <button onClicked={() => sh(quicksettings.network.peek())}>
         <Box px="2xl" gap="md">
           <Icon symbolic iconName="applications-system" />
           <label label="Network" />

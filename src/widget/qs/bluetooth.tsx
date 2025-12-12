@@ -4,11 +4,12 @@ import { Box, FlatButton, Icon, Separator, Spinner } from '@/components';
 import { For, createBinding } from 'gnim';
 import { sh } from '@/support/os';
 import { timeout } from 'ags/time';
-import options from 'options';
+import { configs } from 'options';
+
+const { quicksettings } = configs;
 
 const bluetooth = BT.get_default();
-const bt = createBinding(bluetooth, 'adapter').get();
-const { quicksettings } = options;
+const bt = createBinding(bluetooth, 'adapter').peek();
 
 export const Bluetooth = () => {
   const icon = createBinding(bt, 'powered').as(p => (p ? 'bluetooth-active' : 'bluetooth-disabled'));
@@ -20,7 +21,7 @@ export const Bluetooth = () => {
       name="bluetooth"
       icon={icon}
       state={createBinding(bt, 'powered')}
-      label={createBinding(bt, 'powered').as(p => (p ? (device.get().length === 1 ? device.get()[0].alias : `${device.get().length} Connected`) : 'Disabled'))}
+      label={createBinding(bt, 'powered').as(p => (p ? (device.peek().length === 1 ? device.peek()[0].alias : `${device.peek().length} Connected`) : 'Disabled'))}
       activate={() => {
         bt.powered = true;
         bt.start_discovery();
@@ -69,7 +70,7 @@ export const BluetoothDevices = () => {
         </For>
       </Box>
       <Separator my="md" />
-      <button onClicked={() => sh(quicksettings.bluetooth.get())}>
+      <button onClicked={() => sh(quicksettings.bluetooth.peek())}>
         <Box px="2xl" gap="md">
           <Icon symbolic iconName="applications-system" />
           <label label="Bluetooth" />

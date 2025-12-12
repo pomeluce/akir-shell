@@ -1,4 +1,3 @@
-import options from 'options';
 import PanelButton from './panel-button';
 import Hyprland from 'gi://AstalHyprland?version=0.1';
 import { Gtk } from 'ags/gtk4';
@@ -7,7 +6,8 @@ import { createBinding, createComputed, createState, For } from 'gnim';
 import { throttle } from '@/support/function';
 import { range } from '@/support/array';
 import { cnames } from '@/support/utils';
-import { scss } from '@/theme/theme';
+import { scss } from '@/theme/style';
+import { configs } from 'options';
 
 void scss`.bar {
   .panel.transparent .panel-button.workspaces label.workspace {
@@ -66,15 +66,17 @@ function Workspace({ id }: { id: number }) {
   const hyprland = Hyprland.get_default();
   const ws = workspace(id);
 
-  const classes = createComputed([createBinding(hyprland, 'focusedWorkspace'), createBinding(hyprland, 'clients'), ws], (focused, clients, ws) =>
-    cnames('workspace', focused === ws && 'focused', clients.filter(c => c.workspace == ws).length > 0 ? 'occupied' : 'empty'),
-  );
+  const classes = createComputed(() => {
+    const focused = createBinding(hyprland, 'focusedWorkspace');
+    const clients = createBinding(hyprland, 'clients');
+    return cnames('workspace', focused() === ws() && 'focused', clients().filter(c => c.workspace == ws()).length > 0 ? 'occupied' : 'empty');
+  });
 
   return <label valign={CENTER} class={classes} label={`${id}`} />;
 }
 
 export default () => {
-  const { flat, workspaces, label } = options.bar.workspaces;
+  const { flat, workspaces, label } = configs.bar.workspaces;
   const hyprland = Hyprland.get_default();
 
   const scroll = throttle(200, (y: number) => hyprland.dispatch('workspace', y > 0 ? 'm+1' : 'm-1'));
@@ -91,7 +93,7 @@ export default () => {
       }}
     >
       <Box gap="md">
-        <For each={workspaces()(n => range(1, n))}>{(i: number) => <Workspace id={i} />}</For>
+        <For each={workspaces(n => range(1, n))}>{(i: number) => <Workspace id={i} />}</For>
       </Box>
     </PanelButton>
   );

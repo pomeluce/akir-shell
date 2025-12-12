@@ -1,7 +1,5 @@
 import Gio from 'gi://Gio';
-import options from 'options';
-
-const { theme } = options;
+import { themes } from 'options';
 
 export default {
   async init() {
@@ -10,15 +8,14 @@ export default {
         schema: 'org.gnome.desktop.interface',
       });
 
-      const scheme = theme.scheme.mode();
-
-      if (theme.scheme.enable.get()) {
+      const scheme = themes.scheme.mode;
+      if (themes.scheme.enable.peek()) {
         scheme.subscribe(() => {
-          settings.set_string('color-scheme', `prefer-${scheme.get()}`);
-          settings.set_string('gtk-theme', theme.scheme.theme[scheme.get()].get());
+          settings.set_string('color-scheme', `prefer-${scheme.peek()}`);
+          settings.set_string('gtk-theme', themes.scheme.theme[scheme.peek()].peek());
         });
-        settings.set_string('color-scheme', `prefer-${scheme.get()}`);
-        settings.set_string('gtk-theme', theme.scheme.theme[scheme.get()].get());
+        settings.set_string('color-scheme', `prefer-${scheme.peek()}`);
+        settings.set_string('gtk-theme', themes.scheme.theme[scheme.peek()].peek());
       }
     } catch (error) {
       printerr('gsettings integration failed', error);
