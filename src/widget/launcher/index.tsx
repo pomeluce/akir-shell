@@ -21,6 +21,11 @@ export default () =>
 
     const hidPanels = () => Object.values(pls).map(pl => pl.visible(false));
 
+    const setPanel = (pl: PanelKeyType) => {
+      setCurrentPanel(pl);
+      handler({ text: '' });
+    };
+
     const handler = ({ text, enter }: { text: string; enter?: boolean }) => {
       hidPanels();
 
@@ -54,7 +59,7 @@ export default () =>
       );
     };
 
-    return (
+    const win = (
       <PopupWindow
         name="launcher"
         namespace="akirds-launcher"
@@ -75,8 +80,9 @@ export default () =>
           <PopupBin r="md" css={width(s => `min-width: ${s}rem;`)}>
             <Box vertical p="2xl" mt="2xl">
               <box>
-                <Panel label="Apps" icon="preferences-desktop-apps" panel="app" />
-                <Panel label="ClipBoard" icon="clipboard" panel="clipboard" />
+                {Object.values(pls).map(v => (
+                  <Panel label={v.tab.label} icon={v.tab.icon} panel={v.tab.name as PanelKeyType} />
+                ))}
               </box>
               <box orientation={Gtk.Orientation.VERTICAL} class={separator(s => `launcher separator-${s};`)}>
                 <Search placeholder={placeholder} handler={handler} />
@@ -90,7 +96,8 @@ export default () =>
           </PopupBin>
         </box>
       </PopupWindow>
-    );
+    ) as Gtk.Widget;
+    return Object.assign(win, { setPanel });
   });
 
 void scss`.launcher {
@@ -102,5 +109,10 @@ void scss`.launcher {
   &.separator-none separator {
     min-height: 0;
     background-color: transparent;
+  }
+
+  .body .color,
+  .body .image {
+    border-radius: $radius * 0.75;
   }
 }`;

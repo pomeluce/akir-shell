@@ -4,3 +4,7 @@ import { Accessor, CCProps } from 'gnim';
 type Props<T extends Gtk.Widget, Props> = CCProps<T, Partial<Props>>;
 
 type Accessable<T> = { [K in keyof T]: T[K] extends Accessor<infer U> ? Accessor<U> : T[K] | Accessor<T[K]> };
+
+type EvalCommands = {
+  launcher: (panel: string) => void;
+};

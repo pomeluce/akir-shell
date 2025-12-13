@@ -52,7 +52,6 @@
       deps = with pkgs; [
         gtk4
         dart-sass
-        # fzf
         hyprpicker
         libnotify
         brightnessctl
@@ -61,15 +60,13 @@
         # wayshot
         # slurp
         # swappy
-        # cliphist
-        # pipewire
-        # wireplumber
-        # gnome-control-center
-        # gnome-calendar
-        # gnome-bluetooth
-        # swww
-        # networkmanager
-        # matugen
+        cliphist
+        pipewire
+        wireplumber
+        gnome-control-center
+        gnome-calendar
+        gnome-bluetooth
+        networkmanager
       ];
 
       mkPackage =

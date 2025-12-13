@@ -15,6 +15,7 @@ export default () => {
   const [visible, setVisible] = createState<string[]>([]);
 
   return {
+    tab: { name: 'app', icon: 'preferences-desktop-apps', label: 'Apps' },
     ui: AppList({ list, visible }) as Gtk.Widget,
     placeholder: placeholder.peek(),
     reload: () => setList(q('')),

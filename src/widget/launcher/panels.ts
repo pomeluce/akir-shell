@@ -36,6 +36,7 @@ function makePanel(panel: () => Panel) {
 }
 
 export type Panel = {
+  tab: { name: string; icon: string; label: string };
   ui?: Gtk.Widget;
   placeholder?: string;
   reload?(): void;

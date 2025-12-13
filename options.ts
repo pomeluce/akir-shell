@@ -74,12 +74,12 @@ export const configs = mkOptions('config', {
       flat: opt(true),
       icon: opt(GLib.get_os_info('LOGO') || 'system-search-symbolic'),
       label: opt('Applications'),
-      action: opt('ags request toggle launcher -i akirds'),
+      action: opt(`ags request eval launcher app -i akirds`),
     },
     date: {
       flat: opt(true),
       format: opt('%m-%d %H:%M:%S - %A'),
-      action: opt(`akir-shell -t datemenu`),
+      action: opt(`ags request toggle datemenu -i akirds`),
       label: opt('Calendar'),
     },
     battery: {
@@ -101,7 +101,7 @@ export const configs = mkOptions('config', {
     },
     messages: {
       flat: opt(true),
-      action: opt(`akir-shell -t datemenu`),
+      action: opt(`ags request toggle datemenu -i akirds`),
     },
     colorpicker: {
       flat: opt(true),
@@ -150,6 +150,7 @@ export const configs = mkOptions('config', {
     clipboard: {
       maxItems: opt(10),
       height: opt(4),
+      imagePreview: opt(true),
       placeholder: opt('Search clipboard...'),
     },
     cmd: {

@@ -2,8 +2,8 @@ import Battery from 'gi://AstalBattery?version=0.1';
 import { Box, Button, Icon } from '@/components';
 import { lengthStr } from '@/support/utils';
 import { createBinding, createComputed } from 'gnim';
-import { createPoll } from 'ags/time';
 import { configs } from 'options';
+import { uptime } from '@/support/date';
 
 const { image, size } = configs.quicksettings.avatar;
 
@@ -18,8 +18,6 @@ const SysButton = ({ value, icon }: { value: PowerMenuType; icon: string }) => (
 );
 
 export default () => {
-  const uptime = createPoll(0, 60_000, 'cat /proc/uptime', line => Number.parseInt(line.split('.')[0]) / 60);
-
   return (
     <Box class="header" gap="xl" m="2xl" pt="2xl">
       <box

@@ -1,6 +1,6 @@
-import { execAsync } from 'ags/process';
 import GLib from 'gi://GLib?version=2.0';
 import Gio from 'gi://Gio?version=2.0';
+import { execAsync } from 'ags/process';
 
 /** @returns execAsync(["bash", "-c", cmd]).catch */
 export async function sh(strings: string | TemplateStringsArray, ...values: unknown[]) {

@@ -1,3 +1,4 @@
+import { EvalCommands } from './types/widget';
 import '@/support/globals';
 import theme from '@/theme';
 import app from 'ags/gtk4/app';
@@ -62,7 +63,15 @@ export const main = (props: Props) => {
         }
         case 'eval':
         default:
-          return app.runAsync(args).then(res).catch(res);
+          if (args.length === 0) return res('no expression');
+          const fn = args[0];
+          try {
+            const fnArgs = args.slice(1);
+            ($eval[fn as keyof EvalCommands] as Function)(...fnArgs);
+            return res('eval run success');
+          } catch (err) {
+            return res(String(err));
+          }
       }
     },
     async main(...args) {

@@ -1,5 +1,5 @@
 import GObject, { getter, register } from 'gnim/gobject';
-import { dependencies, sh } from '@/support/os';
+import { bash, dependencies, mkdir, sh } from '@/support/os';
 import { exec, subprocess } from 'ags/process';
 
 @register({ GTypeName: 'Cliphist' })
@@ -50,5 +50,18 @@ export default class Cliphist extends GObject.Object {
   query(term: string) {
     if (!term) return this.#history;
     return this.#history.filter(item => item.match(term));
+  }
+
+  async load_image(id: string) {
+    if (!dependencies('cliphist')) return;
+    const imagePath = `${CACHE}/cliphist/${id}.png`;
+
+    try {
+      mkdir(`${CACHE}/cliphist`);
+      await bash(`cliphist decode ${id} > ${imagePath}`);
+      return imagePath;
+    } catch (error) {
+      console.error('Failed to load image preview:', error);
+    }
   }
 }

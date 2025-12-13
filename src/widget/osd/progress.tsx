@@ -27,7 +27,6 @@ export default ({ height = 18, width = 180, vertical = false, value, icon }: Pro
     <box
       onDestroy={unsub}
       class="progress"
-      // expand={false}
       hexpand={false}
       vexpand={false}
       css={`
@@ -37,7 +36,6 @@ export default ({ height = 18, width = 180, vertical = false, value, icon }: Pro
     >
       <box class="fill" css={style} hexpand={vertical} vexpand={!vertical} halign={vertical ? FILL : START} valign={vertical ? END : FILL}>
         <Icon
-          // expand
           hexpand
           vexpand
           symbolic

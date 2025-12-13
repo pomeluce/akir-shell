@@ -3,7 +3,6 @@ import Brightness from '@/service/brightness';
 import Progress from './progress';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import { Accessor, createComputed, createRoot, createState, Setter, With } from 'gnim';
-import { PopupBin } from '@/components';
 import { scss } from '@/theme/style';
 import { timeout } from 'ags/time';
 import { configs } from 'options';
@@ -61,9 +60,7 @@ function OnScreenProgress({ vertical, visible, setVisible }: { vertical: boolean
       transitionType={transitionType}
     >
       <box css={osd.margin(m => `margin: ${m}px;`)}>
-        <PopupBin>
-          <Progress value={progValue} width={vertical ? 42 : 300} height={vertical ? 300 : 42} vertical={vertical} icon={iconName} />
-        </PopupBin>
+        <Progress value={progValue} width={vertical ? 54 : 300} height={vertical ? 300 : 54} vertical={vertical} icon={iconName} />
       </box>
     </revealer>
   );
@@ -101,6 +98,10 @@ export default (monitor: Gdk.Monitor) =>
 void scss`window.osd  {
   margin: $spacing * 2;
   padding: $padding * .4;
+
+  box {
+    border-radius: $radius;
+  }
 
   @if ($radius > 0) {
     border-radius: $radius + ($padding * .4);

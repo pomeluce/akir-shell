@@ -38,7 +38,7 @@ export function AppButton({ app }: { app: AstalApps.Application }) {
         </Box>
         <Box pr="lg" vertical valign={CENTER}>
           <label class="name" halign={START} label={app.name} singleLineMode ellipsize={Pango.EllipsizeMode.END} />
-          {app.description && <label xalign={0} class="description" wrap label={app.description} maxWidthChars={58} />}
+          {app.description && <label xalign={0} class="description" wrap label={app.description} maxWidthChars={64} />}
         </Box>
       </box>
     </Button>
