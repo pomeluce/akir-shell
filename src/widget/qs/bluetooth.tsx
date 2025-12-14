@@ -21,13 +21,15 @@ export const Bluetooth = () => {
       name="bluetooth"
       icon={icon}
       state={createBinding(bt, 'powered')}
-      label={createBinding(bt, 'powered').as(p => (p ? (device.peek().length === 1 ? device.peek()[0].alias : `${device.peek().length} Connected`) : 'Disabled'))}
+      label={createBinding(bt, 'powered').as(p => (p ? (device().length === 1 ? device()[0].alias : `${device().length} Connected`) : 'Disabled'))}
       activate={() => {
-        bt.powered = true;
-        bt.start_discovery();
-        timeout(10000, () => {
-          bt.stop_discovery();
-        });
+        if (!bt.powered) bt.powered = true;
+        if (!bt.discovering) {
+          bt.start_discovery();
+          timeout(10000, () => {
+            if (bt.discovering) bt.stop_discovery();
+          });
+        }
       }}
       deactivate={() => (bt.powered = false)}
     />
@@ -46,7 +48,7 @@ export const BluetoothDevices = () => {
             const connecting = createBinding(device, 'connecting');
 
             function onClicked() {
-              bluetooth.adapter.powered = true;
+              if (!bluetooth.adapter.powered) bluetooth.adapter.powered = true;
               if (!device.connecting && !device.connected) device.connect_device(null);
               else device.disconnect_device(null);
             }
@@ -70,7 +72,7 @@ export const BluetoothDevices = () => {
         </For>
       </Box>
       <Separator my="md" />
-      <button onClicked={() => sh(quicksettings.bluetooth.peek())}>
+      <button onClicked={() => sh(quicksettings.bluetooth())}>
         <Box px="2xl" gap="md">
           <Icon symbolic iconName="applications-system" />
           <label label="Bluetooth" />

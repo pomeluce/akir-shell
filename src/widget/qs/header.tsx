@@ -2,10 +2,11 @@ import Battery from 'gi://AstalBattery?version=0.1';
 import { Box, Button, Icon } from '@/components';
 import { lengthStr } from '@/support/utils';
 import { createBinding, createComputed } from 'gnim';
-import { configs } from 'options';
+import { configs, themes } from 'options';
 import { uptime } from '@/support/date';
 
 const { image, size } = configs.quicksettings.avatar;
+const { mode } = themes.scheme;
 
 const battery = Battery.get_default();
 
@@ -36,6 +37,12 @@ export default () => {
         </Box>
       </Box>
       <box hexpand />
+
+      <Button r="2xl" suggested onClicked={() => mode.set(mode() === 'dark' ? 'light' : 'dark')}>
+        <Box p="2xl">
+          <Icon size={1.4} symbolic iconName={mode(s => `${s}-mode`)} />
+        </Box>
+      </Button>
       <SysButton value="lockscreen" icon="system-lock-screen" />
       <SysButton value="logout" icon="system-log-out" />
       <SysButton value="shutdown" icon="system-shutdown" />

@@ -6,7 +6,6 @@ import { Astal, Gtk } from 'ags/gtk4';
 import { AppMixer, Microphone, SinkSelector, Volume } from './volume';
 import { Network, WifiSelection } from './network';
 import { Bluetooth, BluetoothDevices } from './bluetooth';
-import { DarkMode } from './darkmode';
 import { ThemeColor, ThemeColorSelection } from './theme-color';
 import { MicMute } from './mic-mute';
 import { DND } from './dnd';
@@ -14,6 +13,7 @@ import { Media } from './media';
 import { scss } from '@/theme/style';
 import { createComputed, createRoot } from 'gnim';
 import { configs } from 'options';
+import { Power, PowerSelection } from './power';
 
 const {
   bar,
@@ -49,7 +49,7 @@ export default () =>
               <SiderBox />
               <Box vertical py="xl" gap="2xl">
                 <Row buttons={[Network, Bluetooth]} menus={[WifiSelection, BluetoothDevices]} />
-                <Row buttons={[ThemeColor, DarkMode]} menus={[ThemeColorSelection]} />
+                <Row buttons={[Power, ThemeColor /* , DarkMode */]} menus={[PowerSelection, ThemeColorSelection]} />
                 <Row buttons={[MicMute, DND]} />
                 <Media />
               </Box>

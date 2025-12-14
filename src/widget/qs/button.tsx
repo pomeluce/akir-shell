@@ -3,6 +3,7 @@ import { Box, Icon, Separator } from '@/components';
 import { Gtk } from 'ags/gtk4';
 import { Accessor, Node, createState } from 'gnim';
 import { timeout } from 'ags/time';
+import { fake } from '@/support/utils';
 
 const [opened, setOpened] = createState('');
 
@@ -10,26 +11,23 @@ interface QSSimpleToggleButtonProps {
   label: string | Accessor<string>;
   icon: string | Accessor<string>;
   onToggled: () => void;
-  state?: Accessor<boolean> | boolean;
+  state?: Accessor<boolean>;
 }
 
-export const QSSimpleToggleButton = ({ icon, label, state = false, onToggled }: QSSimpleToggleButtonProps) => {
-  const [innerState, setInnerState] = createState(state instanceof Accessor ? state.peek() : state);
-
+export const QSSimpleToggleButton = ({ icon, label, state = fake(false), onToggled }: QSSimpleToggleButtonProps) => {
   return (
     <Box
       class="qs-simple-toggle-button raised"
       r="2xl"
       $={self => {
-        self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active');
-        innerState(() => self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active'));
-        if (state instanceof Accessor) state.subscribe(() => setInnerState(state.peek()));
+        self[state() ? 'add_css_class' : 'remove_css_class']('active');
+        state.subscribe(() => self[state() ? 'add_css_class' : 'remove_css_class']('active'));
       }}
     >
       <button hexpand onClicked={onToggled}>
         <Box p="xl" gap="xl">
           <Icon symbolic iconName={icon} />
-          <label label={label} maxWidthChars={10} ellipsize={Pango.EllipsizeMode.END} singleLineMode />
+          <label label={label} maxWidthChars={12} ellipsize={Pango.EllipsizeMode.END} singleLineMode />
         </Box>
       </button>
     </Box>
@@ -78,34 +76,31 @@ interface QSToggleButtonProps {
   icon: string | Accessor<string>;
   activate: () => void;
   deactivate: () => void;
-  state?: Accessor<boolean> | boolean;
+  state?: Accessor<boolean>;
 }
 
-export const QSToggleButton = ({ label, icon, state = false, name = '', activate, deactivate }: QSToggleButtonProps) => {
-  const [innerState, setInnerState] = createState(state instanceof Accessor ? state.peek() : state);
-
+export const QSToggleButton = ({ label, icon, state = fake(false), name = '', activate, deactivate }: QSToggleButtonProps) => {
   return (
     <Box
       class="qs-toggle-button raised"
       r="2xl"
       $={self => {
-        self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active');
-        innerState(() => self[innerState.peek() ? 'add_css_class' : 'remove_css_class']('active'));
-        if (state instanceof Accessor) state.subscribe(() => setInnerState(state.peek()));
+        self[state() ? 'add_css_class' : 'remove_css_class']('active');
+        state.subscribe(() => self[state() ? 'add_css_class' : 'remove_css_class']('active'));
       }}
     >
       <button
         hexpand
         onClicked={() => {
-          if (innerState.peek()) {
+          if (state()) {
             deactivate();
-            if (opened.peek() === name) setOpened('');
+            if (opened() === name) setOpened('');
           } else activate();
         }}
       >
         <Box p="xl" gap="xl">
           <Icon symbolic iconName={icon} />
-          <label label={label} ellipsize={Pango.EllipsizeMode.END} singleLineMode maxWidthChars={10} />
+          <label label={label} ellipsize={Pango.EllipsizeMode.END} singleLineMode maxWidthChars={12} />
         </Box>
       </button>
       <QSToggleArrow name={name} activate={activate} />

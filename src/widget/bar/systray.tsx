@@ -46,6 +46,8 @@ const Item = (item: Tray.TrayItem) => {
           });
 
           self.connect('destroy', () => {
+            popover.unparent();
+            menuButton.set_popover(null);
             menuButton.unparent();
           });
         }}

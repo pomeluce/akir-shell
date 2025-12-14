@@ -1,13 +1,13 @@
 import Box from '@/components/box';
 import { QSMenu, QSToggleButton } from './button';
 import { createComputed, For } from 'gnim';
-import { cnames } from '@/support/utils';
+import { cnames, fake } from '@/support/utils';
 import { configs, themes } from 'options';
 
 const { quicksettings } = configs;
 
 export const ThemeColor = () => {
-  return <QSToggleButton name="themeColor" icon="preferences-color" state={true} label="Theme" activate={() => {}} deactivate={() => {}} />;
+  return <QSToggleButton name="themeColor" icon="preferences-color" state={fake(true)} label="Theme" activate={() => {}} deactivate={() => {}} />;
 };
 
 export const ThemeColorSelection = () => {
