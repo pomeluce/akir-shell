@@ -11,6 +11,7 @@ export function icon(name: string | null, fallback = 'image-missing', checker: (
   if (!name) return fallback || '';
 
   const icon = substitutes[name] || substitutes[name.toLowerCase()] || name;
+
   if (GLib.file_test(icon, GLib.FileTest.EXISTS)) return icon;
   if (checker(icon)) return icon;
   if (checker(icon.toLowerCase())) return icon.toLowerCase();
@@ -26,5 +27,6 @@ export function symbolic(i: string, s: boolean) {
 }
 
 export function lookupIcon(name: string) {
-  return Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).lookup_icon(name, null, 16, 1, Gtk.TextDirection.LTR, Gtk.IconLookupFlags.NONE);
+  return Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).has_icon(name);
+  // return Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!).lookup_icon(name, null, 16, 1, Gtk.TextDirection.LTR, Gtk.IconLookupFlags.NONE);
 }

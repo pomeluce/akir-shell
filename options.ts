@@ -49,12 +49,12 @@ export const themes = mkOptions('theme', {
     },
     gapsMultiplier: opt(1.7),
   },
-  swww: {
-    enable: opt(false),
-    fps: opt(165),
-    wp: opt(`${GLib.get_user_config_dir()}/wallpapers`),
-    interval: opt(300),
-  },
+  // swww: {
+  //   enable: opt(false),
+  //   fps: opt(165),
+  //   wp: opt(`${GLib.get_user_config_dir()}/wallpapers`),
+  //   interval: opt(300),
+  // },
   iconSize: opt(20),
 });
 
@@ -74,12 +74,14 @@ export const configs = mkOptions('config', {
       flat: opt(true),
       icon: opt(GLib.get_os_info('LOGO') || 'system-search-symbolic'),
       label: opt('Applications'),
-      action: opt(`ags request eval launcher app -i akirds`),
+      // action: opt(`ags request eval launcher app -i akirds`),
+      action: opt(`akirds eval launcher app`),
     },
     date: {
       flat: opt(true),
       format: opt('%m-%d %H:%M:%S - %A'),
-      action: opt(`ags request toggle datemenu -i akirds`),
+      // action: opt(`ags request toggle datemenu -i akirds`),
+      action: opt(`akirds -t datemenu`),
       label: opt('Calendar'),
     },
     battery: {
@@ -101,7 +103,8 @@ export const configs = mkOptions('config', {
     },
     messages: {
       flat: opt(true),
-      action: opt(`ags request toggle datemenu -i akirds`),
+      // action: opt(`ags request toggle datemenu -i akirds`),
+      action: opt(`akirds -t datemenu`),
     },
     colorpicker: {
       flat: opt(true),
@@ -124,11 +127,13 @@ export const configs = mkOptions('config', {
     powermenu: {
       suggested: opt(true),
       flat: opt(true),
-      action: opt('ags request toggle powermenu -i akirds'),
+      // action: opt('ags request toggle powermenu -i akirds'),
+      action: opt('akirds -t powermenu'),
     },
     systemIndicators: {
       flat: opt(true),
-      action: opt('ags request toggle quicksettings -i akirds'),
+      // action: opt('ags request toggle quicksettings -i akirds'),
+      action: opt('akirds -t quicksettings'),
       label: opt('System Indicators'),
     },
   },
@@ -139,7 +144,7 @@ export const configs = mkOptions('config', {
     margin: opt(7),
 
     app: {
-      maxItems: opt(7),
+      // maxItems: opt(7),
       placeholder: opt('Search applications...'),
       icon: {
         size: opt(8),
@@ -148,16 +153,16 @@ export const configs = mkOptions('config', {
       sort: opt<'frequency' | 'alphabetical'>('frequency'),
     },
     clipboard: {
-      maxItems: opt(10),
+      // maxItems: opt(10),
       height: opt(4),
       imagePreview: opt(true),
       placeholder: opt('Search clipboard...'),
     },
-    cmd: {
-      placeholder: opt('Search commands...'),
-      height: opt(4),
-      maxItems: opt(10),
-    },
+    // cmd: {
+    //   placeholder: opt('Search commands...'),
+    //   height: opt(4),
+    //   maxItems: opt(10),
+    // },
   },
   powermenu: {
     layout: opt<'1x6' | '2x3'>('1x6'),
@@ -210,21 +215,13 @@ export const configs = mkOptions('config', {
   },
   dock: {
     anchor: opt<'top' | 'bottom'>('bottom'),
-    action: opt('akir-shell -t drawer'),
+    // action: opt(`ags request eval launcher app -i akirds`),
+    action: opt(`akirds eval launcher app`),
     icon: {
-      size: opt(3.5),
+      size: opt(7),
       monochrome: opt(false),
     },
     display: opt<number | Array<string>>(['IDEA', 'code', 'firefox', 'telegram', 'typora', 'Spotify']),
-  },
-  drawer: {
-    rowSize: opt(11),
-    rows: opt(6),
-    solidBackground: opt(false),
-    icon: {
-      size: opt(3),
-      monochrome: opt(false),
-    },
   },
   osd: {
     vertical: opt(true),
@@ -233,7 +230,6 @@ export const configs = mkOptions('config', {
     slide: opt(true),
     anchors: opt<Array<'top' | 'bottom' | 'left' | 'right'>>(['top', 'right']),
   },
-
   datemenu: {
     position: opt<'left' | 'center' | 'right'>('center'),
     calendar: {

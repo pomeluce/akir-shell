@@ -11,5 +11,7 @@ main({
     import('@/windows/osd'),
     import('@/windows/launcher'),
     import('@/windows/datemenu'),
+    import('@/windows/dock'),
+    import('@/windows/notification'),
   ),
 });

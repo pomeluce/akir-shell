@@ -75,3 +75,9 @@ type SeparatorProps = Props<Gtk.Separator, Gtk.Separator.ConstructorProps> &
   }>;
 
 type FlatButtonProps = Props<Gtk.Button, Gtk.Button.ConstructorProps> & Partial<{ color: 'primary' | 'error' | 'success' | Accessor<'primary' | 'error' | 'success'> }>;
+
+type GridProps = Props<Gtk.Grid, Gtk.Grid.ConstructorProps> &
+  Partial<{
+    breakpoint: number;
+    vertical: boolean;
+  }>;

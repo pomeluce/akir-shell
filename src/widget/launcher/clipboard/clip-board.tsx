@@ -18,7 +18,7 @@ const colorPatterns = {
 const imagePattern = /\[\[ binary data \d+ ([KMGT]i)?B \w+ \d+x\d+ \]\]/;
 
 export default ({ history, setHistory }: { history: Accessor<string[]>; setHistory: Setter<string[]> }) => {
-  const { height, maxItems, imagePreview } = configs.launcher.clipboard;
+  const { height /* , maxItems */, imagePreview } = configs.launcher.clipboard;
 
   const cliphist = Cliphist.get_default();
 
@@ -42,7 +42,7 @@ export default ({ history, setHistory }: { history: Accessor<string[]>; setHisto
       }}
     >
       <Box vertical pb="2xl">
-        <For each={history(his => his.slice(0, maxItems.peek()))}>
+        <For each={history /* (his => his.slice(0, maxItems.peek())) */}>
           {(h: string) => {
             const text = h.replace(/^\s*\d+\s+/, '');
 

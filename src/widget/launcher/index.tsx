@@ -14,6 +14,7 @@ const [currentPanel, setCurrentPanel] = createState<PanelKeyType>('app');
 
 export default () =>
   createRoot(() => {
+    let scrolled: Gtk.ScrolledWindow;
     const { separator, width, margin, anchor } = configs.launcher;
     const layout = anchor(([v1, v2]) => `${v1}_${v2}` as LayoutType);
     const pls = panels();
@@ -27,6 +28,7 @@ export default () =>
     };
 
     const handler = ({ text, enter }: { text: string; enter?: boolean }) => {
+      scrolled.set_vadjustment(null);
       hidPanels();
 
       const panel = pls[currentPanel()];
@@ -86,11 +88,13 @@ export default () =>
               </box>
               <box orientation={Gtk.Orientation.VERTICAL} class={separator(s => `launcher separator-${s};`)}>
                 <Search placeholder={placeholder} handler={handler} />
-                <box orientation={Gtk.Orientation.VERTICAL} class="body" css={width(s => `min-width: ${s}pt;`)}>
-                  {Object.values(pls)
-                    .filter(i => i.ui)
-                    .map(i => i.ui)}
-                </box>
+                <scrolledwindow $={self => (scrolled = self)}>
+                  <box vexpand orientation={Gtk.Orientation.VERTICAL} class="body" css={width(s => `min-width: ${s}pt;`)}>
+                    {Object.values(pls)
+                      .filter(i => i.ui)
+                      .map(i => i.ui)}
+                  </box>
+                </scrolledwindow>
               </box>
             </Box>
           </PopupBin>

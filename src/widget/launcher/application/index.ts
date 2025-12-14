@@ -7,7 +7,7 @@ import { configs } from 'options';
 export default () => {
   const apps = new Apps.Apps({ minScore: 1 });
 
-  const { sort, placeholder, maxItems } = configs.launcher.app;
+  const { sort, placeholder /* , maxItems */ } = configs.launcher.app;
 
   const q = (s: string) => (sort.peek() === 'frequency' ? apps.fuzzy_query(s) : apps.fuzzy_query(s).sort((a, b) => a.name.localeCompare(b.name)));
 
@@ -22,7 +22,7 @@ export default () => {
     search: (text: string) => {
       setVisible(
         q(text)
-          .slice(0, maxItems.peek())
+          // .slice(0, maxItems.peek())
           .map(app => app.entry),
       );
     },
