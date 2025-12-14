@@ -19,7 +19,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       entry = "app.ts";
-      version = builtins.readFile ./version;
+      version = builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile ./version);
 
       nativeBuildInputs = with pkgs; [
         wrapGAppsHook3
