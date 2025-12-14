@@ -2,6 +2,10 @@
 
 A desktop shell based on Ags. Currently supports Hyprland and Niri.
 
+> [!IMPORTANT]
+>
+> The current version is based on AGS v3. For previous versions, please visit [akir-shell v2](https://github.com/pomeluce/akir-shell/tree/v2).
+
 ## Screenshots
 
 ![1](https://imgur.com/kW04wZ5.jpeg)
