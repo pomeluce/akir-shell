@@ -37,9 +37,9 @@ function niri() {
   return {
     visibility,
     connect: (setVisible: (v: boolean) => void) => {
-      niri.connect('notify::clients', () => setVisible(visibility()));
+      niri.connect('notify::windows', () => setVisible(visibility()));
       niri.connect('notify::focused-workspace', () => setVisible(visibility()));
-      niri.connect('notify::focused-client', () => setVisible(visibility()));
+      niri.connect('notify::focused-window', () => setVisible(visibility()));
     },
   };
 }
