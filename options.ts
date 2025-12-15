@@ -1,5 +1,6 @@
 import GLib from 'gi://GLib?version=2.0';
 import { mkOptions, opt } from '@/support/option';
+import { createState } from 'gnim';
 
 export const themes = mkOptions('theme', {
   dark: {
@@ -20,7 +21,7 @@ export const themes = mkOptions('theme', {
     widget: opt('#080808'),
     border: opt('#080808'),
   },
-  blur: opt(30),
+  blur: opt(10),
   scheme: {
     enable: opt(true),
     mode: opt<'dark' | 'light'>('dark'),
@@ -42,7 +43,7 @@ export const themes = mkOptions('theme', {
   radius: opt(9),
   font: opt('CaskaydiaMono Nerd Font 10'),
   hyprland: {
-    enable: opt(true),
+    enable: opt(false),
     inactiveBorder: {
       dark: opt('#282828'),
       light: opt('#181818'),
@@ -246,3 +247,5 @@ export const configs = mkOptions('config', {
     dissmissOnHover: opt(false),
   },
 });
+
+export const [compositor, setCompositor] = createState<string>(GLib.getenv('XDG_CURRENT_DESKTOP')!.toLowerCase());

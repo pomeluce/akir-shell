@@ -1,21 +1,48 @@
 import AstalApps from 'gi://AstalApps?version=0.1';
 import AstalHyprland from 'gi://AstalHyprland?version=0.1';
+import AstalNiri from 'gi://AstalNiri?version=0.1';
 import { Box, Button, Icon, PopupBin, Separator } from '@/components';
 import { Astal, Gdk, Gtk } from 'ags/gtk4';
 import { sh } from '@/support/os';
 import { createBinding, createComputed, createRoot, createState, For } from 'gnim';
-import { configs } from 'options';
+import { compositor, configs } from 'options';
 import { scss } from '@/theme/style';
 import app from 'ags/gtk4/app';
 
 const { anchor, display, action, icon } = configs.dock;
 
-const hyprland = AstalHyprland.get_default();
-const visibility = () => {
-  const fcw = hyprland.get_focused_client()?.get_workspace();
-  const id = fcw?.id ? fcw.id : hyprland.get_focused_workspace().id;
-  return hyprland.get_workspace(id)?.get_clients().length <= 0;
-};
+function hypr() {
+  const hyprland = AstalHyprland.get_default();
+  const visibility = () => {
+    const fcw = hyprland.get_focused_client()?.get_workspace();
+    const id = fcw?.id ? fcw.id : hyprland.get_focused_workspace().id;
+    return hyprland.get_workspace(id).get_clients().length <= 0;
+  };
+  return {
+    visibility,
+    connect: (setVisible: (v: boolean) => void) => {
+      hyprland.connect('notify::clients', () => setVisible(visibility()));
+      hyprland.connect('notify::focused-workspace', () => setVisible(visibility()));
+      hyprland.connect('notify::focused-client', () => setVisible(visibility()));
+    },
+  };
+}
+
+function niri() {
+  const niri = AstalNiri.get_default();
+  const visibility = () => {
+    const fw = niri.get_focused_workspace();
+    return fw ? fw.get_windows().length <= 0 : true;
+  };
+  return {
+    visibility,
+    connect: (setVisible: (v: boolean) => void) => {
+      niri.connect('notify::clients', () => setVisible(visibility()));
+      niri.connect('notify::focused-workspace', () => setVisible(visibility()));
+      niri.connect('notify::focused-client', () => setVisible(visibility()));
+    },
+  };
+}
 
 function DockAppButton(app: AstalApps.Application) {
   return (
@@ -37,11 +64,24 @@ export default (monitor: Gdk.Monitor) =>
       return typeof show === 'number' ? apps.get_list().slice(0, show) : show.map(f => apps.fuzzy_query(f)[0]);
     });
 
-    const [visible, setVisible] = createState(visibility());
+    let visibility: () => boolean;
+    let connect: (setVisible: (v: boolean) => void) => void;
 
-    hyprland.connect('notify::clients', () => setVisible(visibility()));
-    hyprland.connect('notify::focused-workspace', () => setVisible(visibility()));
-    hyprland.connect('notify::focused-client', () => setVisible(visibility()));
+    if (compositor() === 'niri') {
+      const { visibility: vis, connect: con } = niri();
+      visibility = vis;
+      connect = con;
+    } else if (compositor() === 'hyprland') {
+      const { visibility: vis, connect: con } = hypr();
+      visibility = vis;
+      connect = con;
+    } else {
+      visibility = () => true;
+      connect = () => {};
+    }
+
+    const [visible, setVisible] = createState(visibility());
+    connect(setVisible);
 
     return (
       <window

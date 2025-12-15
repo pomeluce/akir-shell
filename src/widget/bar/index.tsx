@@ -37,7 +37,7 @@ void scss`.bar .panel {
   }
 }`;
 
-const widget: Record<BarWidget, () => JSX.Element> = {
+const widget: Record<BarWidget, (monitor: Gdk.Monitor) => JSX.Element> = {
   battery: Battery,
   colorpicker: ColorPicker,
   date: Date,
@@ -82,13 +82,13 @@ export default (monitor: Gdk.Monitor) =>
       >
         <centerbox class={classes}>
           <box $type="start" hexpand>
-            <For each={start}>{w => widget[w]()}</For>
+            <For each={start}>{w => widget[w](monitor)}</For>
           </box>
           <box $type="center" halign={CENTER}>
-            <For each={center}>{w => widget[w]()}</For>
+            <For each={center}>{w => widget[w](monitor)}</For>
           </box>
           <box $type="end">
-            <For each={end}>{w => widget[w]()}</For>
+            <For each={end}>{w => widget[w](monitor)}</For>
           </box>
         </centerbox>
       </window>

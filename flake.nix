@@ -7,6 +7,10 @@
       url = "github:aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    astal = {
+      url = "github:sameoldlab/astal/feat/niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -14,6 +18,7 @@
       self,
       nixpkgs,
       ags,
+      astal,
     }:
     let
       system = "x86_64-linux";
@@ -43,6 +48,9 @@
           powerprofiles
           tray
           wireplumber
+        ])
+        ++ (with astal.packages.${system}; [
+          niri
         ])
         ++ (with pkgs; [
           libadwaita

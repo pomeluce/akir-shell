@@ -52,6 +52,7 @@ async function reset() {
 }
 
 async function init({ App }: IntegrationProps) {
+  if (!themes.hyprland.enable.peek()) return;
   async function blur(name: string) {
     await sendBatch(`layerrule unset, ${name}`);
 
