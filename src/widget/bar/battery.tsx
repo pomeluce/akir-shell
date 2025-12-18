@@ -20,7 +20,7 @@ const percent = createBinding(Battery.get_default(), 'percentage');
 
 const PercentageLabel = () => (
   <box>
-    <revealer canTarget={false} revealChild={percentage()} transitionType={SLIDE_RIGHT}>
+    <revealer canTarget={false} revealChild={percentage} transitionType={SLIDE_RIGHT}>
       <label label={percent.as(p => `${Math.floor(p * 100)}%`)} />
     </revealer>
   </box>
@@ -45,11 +45,11 @@ export default () => {
     <PanelButton
       class={classes}
       flat={flat()}
-      suggested={suggested()}
+      suggested={suggested}
       color={style}
       visible={createBinding(battery, 'isPresent')}
       tooltipText={percent.as(p => `${Math.round(p * 100)}%`)}
-      onClicked={() => percentage.set(!percentage.peek())}
+      onClicked={() => percentage.set(!percentage())}
     >
       <box>
         <box visible={bar(s => s === 'regular')}>

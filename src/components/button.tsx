@@ -52,11 +52,15 @@ void scss`
     box-shadow: inset 0 0 0 $border-width $border-color;
   }
 
-  // &:focus>box {
-  //   box-shadow: inset 0 0 0 $border-width $active-bg;
-  //   background-color: transparentize($hover-bg, $hover-opacity);
-  //   color: $hover-fg;
-  // }
+  &:focus-visible>box {
+    box-shadow: inset 0 0 0 $border-width $active-bg;
+    background-color: transparentize($hover-bg, $hover-opacity);
+    color: $hover-fg;
+  }
+
+  &:focus:not(:focus-visible) > box {
+    box-shadow: none;
+  }
 
   &:hover>box {
     box-shadow: inset 0 0 0 $border-width $border-color;
