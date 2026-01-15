@@ -35,15 +35,16 @@ A desktop shell based on Ags. Currently supports Hyprland and Niri.
 2. Override the package
 
 ```nix
-inputs: let
-{ pkgs, inputs, ... }: let
+{ pkgs, inputs, ... }:
+let
   akirds = inputs.akirds.packages.${pkgs.system}.akirds;
-in {
+in
+{
   # using home-manager
-  home.packages = [akirds];
+  home.packages = [ akirds ];
 
   # using configuration.nix
-  environment.systemPackages = [akirds];
+  environment.systemPackages = [ akirds ];
 }
 ```
 
