@@ -186,7 +186,7 @@ export const configs = mkOptions("config", {
   powermenu: {
     layout: opt<"1x6" | "2x3">("1x6"),
     labels: opt(true),
-    iconSize: opt(10),
+    iconSize: opt(8),
 
     hibernate: opt("systemctl hibernate"),
     sleep: opt("systemctl suspend"),
