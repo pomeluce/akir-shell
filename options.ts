@@ -191,7 +191,7 @@ export const configs = mkOptions("config", {
     hibernate: opt("systemctl hibernate"),
     sleep: opt("systemctl suspend"),
     reboot: opt("systemctl reboot"),
-    logout: opt("hyprctl dispatch exit"),
+    logout: opt("niri msg action quit"),
     shutdown: opt("shutdown now"),
     lockscreen: opt("swaylock -eF"),
   },
