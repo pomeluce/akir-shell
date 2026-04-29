@@ -21,7 +21,7 @@ export const themes = mkOptions("theme", {
     widget: opt("#080808"),
     border: opt("#080808"),
   },
-  blur: opt(5),
+  blur: opt(30),
   scheme: {
     enable: opt(true),
     mode: opt<"dark" | "light">("dark"),
